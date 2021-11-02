@@ -14,7 +14,7 @@ class LoginController extends Controller
     public function index()
     {
         if (Auth::check() && Auth::user()->role_id==0) {
-            return redirect() -> route('usr.home');
+            return redirect() -> route('usr.dashboarduser');
         } elseif (Auth::check() && Auth::user()->role_id==1) {
             return redirect() -> route('adm.dashboardadmin');
         }
@@ -36,7 +36,7 @@ class LoginController extends Controller
                 if(Auth::user()->role_id==1){
                     return redirect() -> route('adm.dashboardadmin');
                 }else{
-                    return redirect() -> route('home');
+                    return redirect() -> route('usr.dashboarduser');
                 }
             } else {
                 return redirect() -> route('login') -> with(['error' => 'Wrong username or password!']);

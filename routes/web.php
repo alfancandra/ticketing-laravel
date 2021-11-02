@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\Ticket\TicketController;
+use App\Http\Controllers\Admin\DashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,7 +17,7 @@ use App\Http\Controllers\Ticket\TicketController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/login');
 });
 
 Route::get('/login',[LoginController::class,'index'])->name('login');
@@ -24,12 +25,15 @@ Route::post('loginuser',[LoginController::class,'login'])->name('loginuser');
 Route::get('/logout',[LoginController::class,'logout'])->name('logout');
 
 Route::group(['middleware' => ["UserLogin"], 'as' => 'usr.'], function() {
-    // Admin Dashboard
+    // Login
+    Route::get('/dashboard',[DashboardController::class,'dashboarduser'])->name('dashboarduser');
     Route::get('/ticket',[TicketController::class,'index'])->name('ticket');
     Route::get('/ticket/all',[TicketController::class,'allticket'])->name('allticket');
     Route::get('/ticket/add',[TicketController::class,'add'])->name('addticket');
     Route::post('ticket/store',[TicketController::class,'store'])->name('storeticket');
     Route::get('/ticket/show/{id}',[TicketController::class,'show'])->name('showticket');
     Route::get('/ticket/nonaktif',[TicketController::class,'nonaktif'])->name('ticketnonaktif');
+    Route::get('/ticket/solved/{id}',[TicketController::class,'solved'])->name('ticketsolved');
+    Route::get('/ticket/cari',[TicketController::class,'cari'])->name('cariticket');
 });
 

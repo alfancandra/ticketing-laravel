@@ -32,7 +32,8 @@
 			<div class="logo-header" data-background-color="purple">
 
 				<a href="/ticket" class="logo">
-					<img src="{{ asset('') }}assets/img/logo.svg" alt="navbar brand" class="navbar-brand">
+                    <i class="la flaticon-customer-support text-light"></i> <span class="text-light">Support Ticket</span>
+
 				</a>
 				<button class="navbar-toggler sidenav-toggler ml-auto" type="button" data-toggle="collapse" data-target="collapse" aria-expanded="false" aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon">
@@ -53,14 +54,15 @@
 
 				<div class="container-fluid">
 					<div class="collapse" id="search-nav">
-						<form class="navbar-left navbar-form nav-search mr-md-3">
+						<form class="navbar-left navbar-form nav-search mr-md-3" action="{{ route('usr.cariticket') }}" method="GET">
 							<div class="input-group">
+                                <input type="text" name="cari" placeholder="Search ..." value="" class="form-control">
 								<div class="input-group-prepend">
 									<button type="submit" class="btn btn-search pr-1">
 										<i class="fa fa-search search-icon"></i>
 									</button>
 								</div>
-								<input type="text" placeholder="Search ..." class="form-control">
+
 							</div>
 						</form>
 					</div>
@@ -264,7 +266,7 @@
 											<div class="avatar-lg"><img src="{{ asset('') }}assets/img/profile.jpg" alt="image profile" class="avatar-img rounded"></div>
 											<div class="u-text">
 												<h4>{{ Auth::user()->nama }}</h4>
-												<p class="text-muted">hello@example.com</p><a href="profile.html" class="btn btn-xs btn-secondary btn-sm">View Profile</a>
+												<p class="text-muted">{{ Auth::user()->username }}</p><a href="profile.html" class="btn btn-xs btn-secondary btn-sm">View Profile</a>
 											</div>
 										</div>
 									</li>
@@ -293,11 +295,18 @@
 				<div class="sidebar-content">
 
 					<ul class="nav nav-primary">
-						<li class="nav-item {{ Request::segment(1) === 'admin' ? 'active' : null }}">
-							<a href="/admin" class="collapsed" aria-expanded="false">
+						<li class="nav-item {{ Request::segment(1) === 'admin' || Request::segment(1) === 'dashboard' ? 'active' : null }}">
+							@if(Auth::user()->role_id==1)
+                            <a href="/admin" class="collapsed" aria-expanded="false">
 								<i class="fas fa-home"></i>
 								<p>Dashboard</p>
 							</a>
+                            @else
+                            <a href="/dashboard" class="collapsed" aria-expanded="false">
+								<i class="fas fa-home"></i>
+								<p>Dashboard</p>
+							</a>
+                            @endif
 						</li>
 
 						<li class="nav-item {{ Request::segment(1) === 'ticket' ? 'active submenu' : null }}">
@@ -326,6 +335,15 @@
 								</ul>
 							</div>
 						</li>
+
+						@if(Auth::user()->role_id==1)
+                        <li class="nav-item {{ Request::segment(1) === 'users' ? 'active' : null }}">
+                            <a href="/users" class="collapsed" aria-expanded="false">
+								<i class="fas fa-table"></i>
+								<p>Data User</p>
+							</a>
+						</li>
+                        @endif
 					</ul>
 				</div>
 			</div>
@@ -338,32 +356,7 @@
                     @yield('content')
                 </div>
             </div>
-			<footer class="footer">
-				<div class="container-fluid">
-					<nav class="pull-left">
-						<ul class="nav">
-							<li class="nav-item">
-								<a class="nav-link" href="https://www.themekita.com">
-									ThemeKita
-								</a>
-							</li>
-							<li class="nav-item">
-								<a class="nav-link" href="#">
-									Help
-								</a>
-							</li>
-							<li class="nav-item">
-								<a class="nav-link" href="#">
-									Licenses
-								</a>
-							</li>
-						</ul>
-					</nav>
-					<div class="copyright ml-auto">
-						2018, made with <i class="fa fa-heart heart text-danger"></i> by <a href="https://www.themekita.com">ThemeKita</a>
-					</div>
-				</div>
-			</footer>
+
 		</div>
 
 		<!-- Custom template | don't include it in your project! -->
@@ -432,9 +425,9 @@
 					</div>
 				</div>
 			</div>
-			<div class="custom-toggle">
+			{{-- <div class="custom-toggle">
 				<i class="flaticon-settings"></i>
-			</div>
+			</div> --}}
 		</div>
 		<!-- End Custom template -->
 	</div>

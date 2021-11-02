@@ -11,20 +11,51 @@ class TicketController extends Controller
 {
     public function index()
     {
-        $ticket = Ticket::where('status',0)->get();
-        return view('ticket.index',compact('ticket'));
+        $auth = Auth::user();
+        if($auth->role_id==1){
+            $ticket = Ticket::where('status',0)
+            ->orderBy('created_at','DESC')
+            ->get();
+        }else{
+            $ticket = Ticket::where('status',0)
+            ->where('user_id',$auth->id)
+            ->orderBy('created_at','DESC')
+            ->get();
+        }
+        $title = 'Data Ticket Sudah Diatasi';
+        return view('ticket.index',compact('ticket','title'));
     }
 
     public function nonaktif()
     {
-        $ticket = Ticket::where('status',1)->get();
-        return view('ticket.index',compact('ticket'));
+        $auth = Auth::user();
+        if($auth->role_id==1){
+            $ticket = Ticket::where('status',1)
+            ->orderBy('updated_at','DESC')
+            ->get();
+        }else{
+            $ticket = Ticket::where('status',1)
+            ->where('user_id',$auth->id)
+            ->orderBy('updated_at','DESC')
+            ->get();
+        }
+        $title = 'Data Ticket Belum Diatasi';
+        return view('ticket.index',compact('ticket','title'));
     }
 
     public function allticket()
     {
-        $ticket = Ticket::all();
-        return view('ticket.index',compact('ticket'));
+        $auth = Auth::user();
+        if($auth->role_id==1){
+            $ticket = Ticket::orderBy('updated_at','DESC')
+            ->get();
+        }else{
+            $ticket = Ticket::where('user_id',$auth->id)
+            ->orderBy('updated_at','DESC')
+            ->get();
+        }
+        $title = 'Data Semua Ticket';
+        return view('ticket.index',compact('ticket','title'));
     }
 
     public function add()
@@ -69,9 +100,52 @@ class TicketController extends Controller
                         ->with('success','Ticket Berhasil Terkirim');
     }
 
+    public function solved($id)
+    {
+        $auth = Auth::user();
+        $validate = Ticket::where('user_id',$auth->id)
+        ->where('id',$id)
+        ->first();
+
+        if($auth->role_id==1){
+            $ticket = Ticket::find($id);
+            $ticket->status = 1;
+            $ticket->update();
+            return redirect()->route('usr.ticket')->with('success','Solved');
+        }elseif($auth->role_id==0 && !empty($validate)){
+            $ticket = Ticket::find($id);
+            $ticket->status = 1;
+            $ticket->update();
+            return redirect()->route('usr.ticket')->with('success','Solved');
+        }else{
+            return redirect()->route('usr.ticket')->with('error','Tidak ada hak akses');
+        }
+    }
+
     public function show($id)
     {
         $ticket = Ticket::where('id',$id)->first();
         return view('ticket.show',compact('ticket'));
+    }
+
+    public function cari(Request $request)
+    {
+		$cari = $request->cari;
+        $auth = Auth::user();
+
+        if($auth->role_id==1){
+            $ticket = Ticket::where('nama','like',"%".$cari."%")
+            ->orwhere('pesan','like',"%".$cari."%")
+            ->paginate();
+        }else{
+            $ticket = Ticket::where('user_id',$auth->id)
+            ->where(fn($query) =>
+                $query->where('nama','like',"%".$cari."%")
+                ->orwhere('pesan', 'like',"%".$cari."%")
+                )
+            ->get();
+        }
+        $title = 'Hasil Pencarian '.$cari;
+        return view('ticket.index',['ticket' => $ticket,'title' => $title]);
     }
 }
