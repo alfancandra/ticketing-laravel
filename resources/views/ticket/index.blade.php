@@ -73,9 +73,7 @@
                             @endif</td>
                         <td style="width: 25%" class="align-top">
                             <a href="{{ route('usr.showticket',$row->id) }}" class="btn btn-info btn-sm">Detail</a>
-                            @if($row->status==0)
-                            <a href="{{ route('usr.ticketsolved',$row->id) }}" onclick="return confirm('Apakah anda yakin ?');" class="btn btn-success btn-sm">Ubah Status</a>
-                            @endif
+                            
                         </td>
 
                     </tr>
