@@ -111,12 +111,12 @@ class TicketController extends Controller
             $ticket = Ticket::find($id);
             $ticket->status = 1;
             $ticket->update();
-            return redirect()->route('usr.ticket')->with('success','Solved');
+            return redirect()->route('usr.ticket')->with('success','Berhasil Ubah Status');
         }elseif($auth->role_id==0 && !empty($validate)){
             $ticket = Ticket::find($id);
             $ticket->status = 1;
             $ticket->update();
-            return redirect()->route('usr.ticket')->with('success','Solved');
+            return redirect()->route('usr.ticket')->with('success','Berhasil Ubah Status');
         }else{
             return redirect()->route('usr.ticket')->with('error','Tidak ada hak akses');
         }
