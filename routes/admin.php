@@ -11,5 +11,6 @@ Route::group(['middleware' => ["UserAdmin"], 'as' => 'adm.'], function() {
     Route::get('/user/add',[UserController::class,'add'])->name('adduser');
     Route::post('user/store',[UserController::class,'store'])->name('storeuser');
     Route::get('/user/role/{id}',[UserController::class,'changerole'])->name('changerole');
-
+    Route::get('/user/edit/{id}',[UserController::class,'edit'])->name('edituser');
+    Route::post('user/edit',[UserController::class,'update'])->name('updateuser');
 });

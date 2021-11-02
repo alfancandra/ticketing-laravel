@@ -49,7 +49,7 @@
 
                         <td style="width: 35%"><a href="{{ route('usr.showticket',$row->id) }}" onclick="return confirm('Are you sure you want to delete this item?');" class="btn btn-danger btn-sm">Hapus</a>
 
-                            <a href="{{ route('usr.ticketsolved',$row->id) }}" class="btn btn-success btn-sm">Edit</a>
+                            <a href="{{ route('adm.edituser',$row->id) }}" class="btn btn-success btn-sm">Edit</a>
 
                             <div class="btn-group" role="group">
                                 <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
