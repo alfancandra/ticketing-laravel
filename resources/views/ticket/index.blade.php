@@ -42,7 +42,6 @@
 
                         <td class="align-top">
                             {{ $row->pesan }}
-                            <br>
                             @php if(!empty($row->image)){
                                 $json = json_decode($row->image);
                                 $image = $json[0];
@@ -50,15 +49,9 @@
                             }else{
                                 $foto = false;
                             } @endphp
-                            @if($foto==true && count($json)>1)
-                            <hr>
+                            @if($foto==true)
                             <a href="{{ route('usr.showticket',$row->id) }}">
-                            <img class="" width="70" src="{{ asset('img/photo/' . $image) }}">
-                            </a>
-                            @elseif($foto==true)
-                            <hr>
-                            <a href="{{url('img/photo/'.$image)}}">
-                            <img class="" width="70" src="{{ asset('img/photo/' . $image) }}">
+                                <i class="icon-paper-clip"></i>
                             </a>
                             @endif
                         </td>
@@ -73,7 +66,7 @@
                             @endif</td>
                         <td style="width: 25%" class="align-top">
                             <a href="{{ route('usr.showticket',$row->id) }}" class="btn btn-info btn-sm">Detail</a>
-                            
+
                         </td>
 
                     </tr>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Ticket;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Ticket;
+use App\Models\Pesan;
 use Illuminate\Support\Facades\Auth;
 
 class TicketController extends Controller
@@ -125,7 +126,8 @@ class TicketController extends Controller
     public function show($id)
     {
         $ticket = Ticket::where('id',$id)->first();
-        return view('ticket.show',compact('ticket'));
+        $pesan = Pesan::where('ticket_id',$id)->get();
+        return view('ticket.show',compact('ticket','pesan'));
     }
 
     public function cari(Request $request)
@@ -147,5 +149,27 @@ class TicketController extends Controller
         }
         $title = 'Hasil Pencarian '.$cari;
         return view('ticket.index',['ticket' => $ticket,'title' => $title]);
+    }
+
+    public function kirimpesan(Request $request)
+    {
+        // Validasi
+        $request->validate([
+            'ticket_id' => 'required',
+            'nama' => 'required',
+            'pesan' => 'required'
+        ]);
+
+        try{
+            $pesan = Pesan::create([
+                'ticket_id' => $request->ticket_id,
+                'nama' => $request->nama,
+                'pesan' => $request->pesan,
+            ]);
+            return redirect()->back()->with('success','Sukses Kirim Pesan');
+        } catch (QueryException $e) {
+            return redirect()->back()->with(['error' => $e->errorInfo]);
+        }
+
     }
 }

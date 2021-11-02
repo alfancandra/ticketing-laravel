@@ -35,5 +35,7 @@ Route::group(['middleware' => ["UserLogin"], 'as' => 'usr.'], function() {
     Route::get('/ticket/nonaktif',[TicketController::class,'nonaktif'])->name('ticketnonaktif');
     Route::get('/ticket/solved/{id}',[TicketController::class,'solved'])->name('ticketsolved');
     Route::get('/ticket/cari',[TicketController::class,'cari'])->name('cariticket');
+
+    Route::post('ticket/pesan',[TicketController::class,'kirimpesan'])->name('kirimpesan');
 });
 
