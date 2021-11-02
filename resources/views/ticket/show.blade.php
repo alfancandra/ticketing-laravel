@@ -89,10 +89,22 @@
                     <div class="chat-box">
                         @foreach ($pesan as $p)
                             <div class="mb-3 row">
-                                <label for="staticEmail" class="col-sm-2 col-form-label">{{ $p->nama }}</label>
-                                <div class="col-sm-10">
-                                    <span class="form-control">{{ $p->pesan }}</span>
+                                @if(Auth::check())
+                                <div class="{{ Auth::user()->name == $p->nama ? 'left-chat' : 'right-chat' }}">
+                                    @if(Auth::user()->name == $p->nama)
+                                    <label for="staticEmail" class="col-sm-2 col-form-label"><b>{{ $p->nama }}</b></label>
+                                    <div class="col">
+                                        <span class="form-control">{{ $p->pesan }}</span>
+                                    </div>
+                                    @else
+                                    <label for="staticEmail" class="col-sm-3 col-form-label" style="float: right"><b>{{ $p->nama }}</b></label><br>
+                                    <div class="col" style="float: right">
+                                        <span class="form-control" style="float: right;text-align:right">{{ $p->pesan }}</span>
+                                    </div>
+
+                                    @endif
                                 </div>
+                                @endif
                             </div>
                         @endforeach
                     </div>

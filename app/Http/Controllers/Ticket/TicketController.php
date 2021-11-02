@@ -72,7 +72,7 @@ class TicketController extends Controller
             'user_id' => 'required',
             'pesan' =>  'required',
             'image' => 'max:2024',
-            'image.*' => 'mimes:jpeg,jpg,png,gif'
+            'image.*' => 'mimes:jpeg,jpg,png,gif,pdf,doc,docx'
         ]);
 
         if($request->hasFile('image')) {
@@ -126,7 +126,7 @@ class TicketController extends Controller
     public function show($id)
     {
         $ticket = Ticket::where('id',$id)->first();
-        $pesan = Pesan::where('ticket_id',$id)->get();
+        $pesan = Pesan::where('ticket_id',$id)->orderBy('created_at','DESC')->get();
         return view('ticket.show',compact('ticket','pesan'));
     }
 
