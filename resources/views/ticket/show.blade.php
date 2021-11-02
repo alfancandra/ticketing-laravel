@@ -43,12 +43,20 @@
           </div>
           <div class="mb-3 row">
             <label for="staticEmail" class="col-sm-2 col-form-label">Status</label>
-            <div class="col-sm-10">
+            <div class="col-lg">
                 @if($ticket->status==0)
-                <span class="badge badge-warning">Belum Diatasi </span>
-
+                <span class="badge badge-warning mr-3">Belum Diatasi </span>
+                @if(Auth::user()->role_id==1)
                 <a href="{{ route('usr.ticketsolved',$ticket->id) }}" onclick="return confirm('Apakah anda yakin ?');" class="btn btn-success btn-sm ml-3">Ubah Status</a>
-
+                @else
+                    <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      Edit Status
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                      <a class="dropdown-item" onMouseOver="this.style.color='#0084ff'"
+                      onMouseOut="this.style.color='#000'" href="#">Batalkan Ticket</a>
+                    </div>
+                @endif
                 @elseif($ticket->status==1)
                 <span class="badge badge-success">Teratasi</span>
                 @else
@@ -57,6 +65,7 @@
             </div>
           </div>
 
+          @if(Auth::user()->role_id==1)
           <div class="mb-3 row">
             <label for="staticEmail" class="col-sm-2 col-form-label">Kirim Pesan ke user</label>
             <div class="col-sm-10">
@@ -66,11 +75,14 @@
                 </div>
             </div>
           </div>
+          @endif
           <div class="mb-3 row">
             <label for="staticEmail" class="col-sm-2 col-form-label"></label>
             <div class="col-sm-10">
-              <button class="btn btn-success">Kirim</button>
-              <a href="{{ route('usr.ticket') }}" class="btn btn-success">Kembali</a>
+            @if(Auth::user()->role_id==1)
+                <button class="btn btn-success">Kirim</button>
+            @endif
+                <a href="{{ route('usr.ticket') }}" class="btn btn-success">Kembali</a>
             </div>
 
           </div>
