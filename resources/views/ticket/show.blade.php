@@ -11,27 +11,27 @@ if($ticket->status==0 && Auth::user()->role_id==0){
     <link rel="stylesheet" href="{{ asset('assets/css/chatbox.css') }}">
     <div class="row">
         <div class="col-md-8">
+            @if ($message = Session::get('error'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>{{ $message }}</strong>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            @endif
+            @if ($message = Session::get('success'))
+                <div id="alert" class="alert alert-success alert-block mb-3">
+                    <button type="button" class="close" data-dismiss="alert">×</button>
+                    {{ $message }}
+                </div>
+            @endif
             <form action="{{ route('usr.updateticket') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="card">
                 <div class="card-header">
-                    <h3>Ticket </h3>
+                    <h3>Ticket {{ $ticket->id }}</h3>
                 </div>
                 <div class="card-body">
-                    @if ($message = Session::get('error'))
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        <strong>{{ $message }}</strong>
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    @endif
-                    @if ($message = Session::get('success'))
-                        <div id="alert" class="alert alert-success alert-block mb-3">
-                            <button type="button" class="close" data-dismiss="alert">×</button>
-                            {{ $message }}
-                        </div>
-                    @endif
                     <div class="mb-3 row">
                         <label for="staticEmail" class="col-sm-2 col-form-label">Nama</label>
                         <div class="col-sm-10">
@@ -102,31 +102,50 @@ if($ticket->status==0 && Auth::user()->role_id==0){
                     </div>
                     <div class="mb-3 row">
                         <label for="staticEmail" class="col-sm-2 col-form-label">Status</label>
-                        <div class="col-lg">
-                            @if ($ticket->status == 0)
+                        <div class="col">
+                            {{-- @if ($ticket->status == 0)
                                 <span class="badge badge-warning mr-3">Belum Diatasi </span>
+
                             @elseif($ticket->status==1)
                                 <span class="badge badge-success">Teratasi</span>
+
                             @elseif($ticket->status==2)
                                 <span class="badge badge-danger">Tidak Dapat Diatasi</span>
                             @else
                                 <span class="badge badge-danger">Ticket Dibatalkan</span>
-                            @endif
+                            @endif --}}
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" {{ $ticket->status==1 ? 'checked' : '' }} name="statusticket" value="1" id="inlineRadio1" value="option1">
+                                @if($ticket->status==1)
+                                <span class="badge badge-success">Teratasi</span>
+                                @else
+                                <label class="form-check-label" style="margin-top: 5px" for="inlineRadio1">Teratasi</label>
+                                @endif
+                            </div>
+                              <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" {{ $ticket->status==0 ? 'checked' : '' }} name="statusticket" value="0" id="inlineRadio2" value="option1">
+                                @if($ticket->status==0)
+                                <span class="badge badge-warning" for="inlineRadio2">Belum Diatasi</span>
+                                @else
+                                <label class="form-check-label" style="margin-top: 5px" for="inlineRadio2">Belum Diatasi</label>
+                                @endif
+                            </div>
+                              <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="statusticket" {{ $ticket->status==3 ? 'checked' : '' }} value="3" id="inlineRadio3" value="option2">
+                                @if($ticket->status==3)
+                                <span class="badge badge-danger">Ticket Dibatalkan</span>
+                                @else
+                                <label class="form-check-label" style="margin-top: 5px" for="inlineRadio3">Batalkan Ticket</label>
+                                @endif
+                            </div>
                         </div>
                     </div>
 
                     <div class="mb-3 row">
                         <label for="staticEmail" class="col-sm-2 col-form-label"></label>
                         <div class="col-sm-10">
-                            @if (Auth::user()->role_id == 0 && $ticket->status == 0)
                                 <button type="submit" class="btn btn-success">Simpan</button>
                         </form>
-                                <a href="{{ route('usr.batalticket',$ticket->id) }}" class="btn btn-danger">Batalkan Ticket</a>
-                            @elseif(Auth::user()->role_id==1 && $ticket->status==0)
-                                <a href="{{ route('usr.ticketsolved', $ticket->id) }}"
-                                    onclick="return confirm('Apakah anda yakin ?');" class="btn btn-success mr-3">Ubah
-                                    Status</a>
-                            @endif
                             <a href="{{ route('usr.ticket') }}" class="btn btn-primary">Kembali</a>
                         </div>
 

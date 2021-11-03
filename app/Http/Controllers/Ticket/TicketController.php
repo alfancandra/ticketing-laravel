@@ -166,7 +166,7 @@ class TicketController extends Controller
                 'nama' => $request->nama,
                 'pesan' => $request->pesan,
             ]);
-            return redirect()->back()->with('success','Sukses Kirim Pesan');
+            return redirect()->back();
         } catch (QueryException $e) {
             return redirect()->back()->with(['error' => $e->errorInfo]);
         }
@@ -209,8 +209,10 @@ class TicketController extends Controller
             $ticket = Ticket::where('id',$request->id)->first();
             $ticket->nama = $request->nama;
             $ticket->pesan = $request->pesan;
+            $ticket->status = $request->statusticket;
+
             $ticket->update();
-            return redirect()->back()->with('success','Berhasil Edit');
+            return redirect()->route('usr.ticket')->with('success','Berhasil Edit');
         }catch (QueryException $e) {
             return redirect()->back()->with(['error' => $e->errorInfo]);
         }
@@ -226,5 +228,22 @@ class TicketController extends Controller
         }else{
             return redirect()->back()->with(['error' => 'Error']);
         }
+    }
+
+    public function dibatalkan()
+    {
+        $auth = Auth::user();
+        if($auth->role_id==1){
+            $ticket = Ticket::where('status',3)
+            ->orderBy('created_at','DESC')
+            ->get();
+        }else{
+            $ticket = Ticket::where('status',3)
+            ->where('user_id',$auth->id)
+            ->orderBy('created_at','DESC')
+            ->get();
+        }
+        $title = 'Data Ticket Sudah Dibatalkan';
+        return view('ticket.index',compact('ticket','title'));
     }
 }

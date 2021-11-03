@@ -29,6 +29,7 @@ Route::group(['middleware' => ["UserLogin"], 'as' => 'usr.'], function() {
     Route::get('/dashboard',[DashboardController::class,'dashboarduser'])->name('dashboarduser');
     Route::get('/ticket',[TicketController::class,'index'])->name('ticket');
     Route::get('/ticket/all',[TicketController::class,'allticket'])->name('allticket');
+    Route::get('/ticket/dibatalkan',[TicketController::class,'dibatalkan'])->name('ticketdibatalkan');
     Route::get('/ticket/add',[TicketController::class,'add'])->name('addticket');
     Route::post('ticket/store',[TicketController::class,'store'])->name('storeticket');
     Route::get('/ticket/show/{id}',[TicketController::class,'show'])->name('showticket');
