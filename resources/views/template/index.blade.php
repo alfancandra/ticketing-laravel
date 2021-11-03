@@ -472,6 +472,7 @@
 	<!-- Atlantis DEMO methods, don't include it in your project! -->
 	<script src="{{ asset('') }}assets/js/setting-demo.js"></script>
 	<script src="{{ asset('') }}assets/js/demo.js"></script>
+    @stack('js')
 	<script>
 		$('#lineChart').sparkline([102,109,120,99,110,105,115], {
 			type: 'line',

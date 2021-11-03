@@ -172,4 +172,59 @@ class TicketController extends Controller
         }
 
     }
+
+    public function update(Request $request)
+    {
+        // Validasi
+        $request->validate([
+            'id' => 'required',
+            'nama' => 'required',
+            'pesan' => 'required',
+            'image' => 'max:2024',
+            'image.*' => 'mimes:jpeg,jpg,png,gif,pdf,doc,docx'
+        ]);
+
+        try{
+            if($request->hasFile('image')) {
+                foreach($request->file('image') as $file)
+                {
+                    $name = uniqid() . '_' . time(). '.' .$file->getClientOriginalName();
+                    $file->move(public_path().'/img/photo/', $name);
+                    $data[] = $name;
+                }
+
+                $file= Ticket::where('id',$request->id)->first();
+                $multidata = json_encode($data);
+                if(!empty($file->image)){
+                    $merge = json_encode(array_merge(json_decode($multidata, true),json_decode($request->gambar, true)));
+                }else{
+                    $merge = $multidata;
+                }
+                $file->image = $merge;
+
+                $file->save();
+                return redirect()->back()
+                            ->with('success','Ticket Berhasil Terkirim');
+            }
+            $ticket = Ticket::where('id',$request->id)->first();
+            $ticket->nama = $request->nama;
+            $ticket->pesan = $request->pesan;
+            $ticket->update();
+            return redirect()->back()->with('success','Berhasil Edit');
+        }catch (QueryException $e) {
+            return redirect()->back()->with(['error' => $e->errorInfo]);
+        }
+    }
+
+    public function batal($id)
+    {
+        $ticket = Ticket::find($id);
+        if($ticket){
+            $ticket->status = 3;
+            $ticket->update();
+            return redirect()->route('usr.ticket')->with('success','Berhasil');
+        }else{
+            return redirect()->back()->with(['error' => 'Error']);
+        }
+    }
 }
