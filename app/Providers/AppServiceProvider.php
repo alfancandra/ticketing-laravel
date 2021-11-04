@@ -27,18 +27,18 @@ class AppServiceProvider extends ServiceProvider
     {
         view()->composer('template.index', function($view) {
             $user = Auth::user();
-            $pesan = Pesan::join('tickets','pesans.ticket_id','=','tickets.id')
-            ->select('tickets.user_id','tickets.id as idticket','pesans.nama','pesans.pesan as message')
-            ->orderBy('pesans.created_at','DESC')
-            ->where('tickets.user_id',$user->id)
-            ->where('pesans.nama','!=',$user->name)
+            $pesan = Pesan::join('ticket_tickets','ticket_pesans.ticket_id','=','ticket_tickets.id')
+            ->select('ticket_tickets.user_id','ticket_tickets.id as idticket','ticket_pesans.nama','ticket_pesans.pesan as message')
+            ->orderBy('ticket_pesans.created_at','DESC')
+            ->where('ticket_tickets.user_id',$user->id)
+            ->where('ticket_pesans.nama','!=',$user->name)
             ->get();
 
-            $pesanadmin = Pesan::join('tickets','pesans.ticket_id','=','tickets.id')
-            ->select('tickets.user_id','tickets.id as idticket','pesans.nama','pesans.pesan as message')
-            ->orderBy('pesans.created_at','DESC')
-            ->where('tickets.user_id','!=',$user->id)
-            ->where('pesans.nama','!=',$user->name)
+            $pesanadmin = Pesan::join('ticket_tickets','ticket_pesans.ticket_id','=','ticket_tickets.id')
+            ->select('ticket_tickets.user_id','ticket_tickets.id as idticket','ticket_pesans.nama','ticket_pesans.pesan as message')
+            ->orderBy('ticket_pesans.created_at','DESC')
+            ->where('ticket_tickets.user_id','!=',$user->id)
+            ->where('ticket_pesans.nama','!=',$user->name)
             ->get();
             $view->with(['user' => $pesan,'admin' => $pesanadmin]);;
           });

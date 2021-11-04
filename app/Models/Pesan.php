@@ -9,6 +9,8 @@ class Pesan extends Model
 {
     use HasFactory;
 
+    protected $table = 'ticket_pesans';
+
     protected $fillable = [
         "ticket_id",
         "nama",
