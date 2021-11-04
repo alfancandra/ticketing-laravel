@@ -211,6 +211,7 @@ class TicketController extends Controller
             $ticket->pesan = $request->pesan;
             $ticket->status = $request->statusticket;
             // Update
+            // Update
             $ticket->update();
             return redirect()->route('usr.ticket')->with('success','Berhasil Edit');
         }catch (QueryException $e) {
