@@ -141,10 +141,14 @@ class TicketController extends Controller
             ->paginate();
         }else{
             $ticket = Ticket::where('user_id',$auth->id)
-            ->where(fn($query) =>
-                $query->where('nama','like',"%".$cari."%")
-                ->orwhere('pesan', 'like',"%".$cari."%")
-                )
+            // ->where(fn($query) =>
+            //     $query->where('nama','like',"%".$cari."%")
+            //     ->orwhere('pesan', 'like',"%".$cari."%")
+            //     )
+            ->where(function($q) {
+                 $q->where('nama','like',"%".$cari."%")
+                   ->orwhere('pesan', 'like',"%".$cari."%");
+             })
             ->get();
         }
         $title = 'Hasil Pencarian '.$cari;
