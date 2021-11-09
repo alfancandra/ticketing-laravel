@@ -1,5 +1,5 @@
 @extends('template.index')
 
 @section('content')
-ini dashboard
+dashboard
 @endsection
