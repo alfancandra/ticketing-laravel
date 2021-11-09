@@ -6,7 +6,10 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Ticket;
 use App\Models\Pesan;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Notification;
+use App\Notifications\NewTicket;
 
 class TicketController extends Controller
 {
@@ -90,13 +93,22 @@ class TicketController extends Controller
             $file->image = json_encode($data);
 
             $file->save();
-           return redirect()->route('usr.ticket')
-                        ->with('success','Ticket Berhasil Terkirim');
         }
+
+        $useradmin = User::where('role_id',1)->get();
 
         /// insert setiap request dari form ke dalam database via model
         /// jika menggunakan metode ini, maka nama field dan nama form harus sama
-        Ticket::create($request->all());
+        $ticket = Ticket::create($request->all());
+
+        // SEND Notification
+        $notifdata = [
+            'id_ticket' => $ticket->id,
+            'name' => $request->nama,
+            'message' => 'Ticket Baru telah dibuat'
+        ];
+
+        Notification::send($useradmin, new NewTicket($notifdata));
         return redirect()->route('usr.ticket')
                         ->with('success','Ticket Berhasil Terkirim');
     }
