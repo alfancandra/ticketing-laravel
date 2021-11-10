@@ -163,7 +163,7 @@
                                     </div>
                                 </li>
                                 <li>
-                                    <a class="see-all" href="javascript:void(0);">See all notifications<i
+                                    <a class="see-all" href="{{ route('usr.notifications') }}">See all notifications<i
                                             class="fa fa-angle-right"></i> </a>
                                 </li>
                             </ul>
