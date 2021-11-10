@@ -18,15 +18,15 @@ class TicketController extends Controller
         $auth = Auth::user();
         if($auth->role_id==1){
             $ticket = Ticket::where('status',0)
-            ->orderBy('created_at','DESC')
+            ->orderBy('created_at','ASC')
             ->get();
         }else{
             $ticket = Ticket::where('status',0)
             ->where('user_id',$auth->id)
-            ->orderBy('created_at','DESC')
+            ->orderBy('created_at','ASC')
             ->get();
         }
-        $title = 'Data Ticket Sudah Diatasi';
+        $title = 'Data Ticket Belum Diatasi';
         return view('ticket.index',compact('ticket','title'));
     }
 
@@ -124,6 +124,7 @@ class TicketController extends Controller
             $ticket = Ticket::find($id);
             $ticket->status = 1;
             $ticket->update();
+
             return redirect()->route('usr.ticket')->with('success','Berhasil Ubah Status');
         }elseif($auth->role_id==0 && !empty($validate)){
             $ticket = Ticket::find($id);
@@ -157,7 +158,7 @@ class TicketController extends Controller
             //     $query->where('nama','like',"%".$cari."%")
             //     ->orwhere('pesan', 'like',"%".$cari."%")
             //     )
-            ->where(function($q) {
+            ->where(function($q) use ($cari) {
                  $q->where('nama','like',"%".$cari."%")
                    ->orwhere('pesan', 'like',"%".$cari."%");
              })
@@ -226,6 +227,16 @@ class TicketController extends Controller
             $ticket->nama = $request->nama;
             $ticket->pesan = $request->pesan;
             $ticket->status = $request->statusticket;
+            if($request->statusticket==1){
+                $user = User::where('id',$ticket->user_id)->get();
+                $notifdata = [
+                    'id_ticket' => $request->id,
+                    'name' => $request->nama,
+                    'message' => 'Ticket ['.$request->id.'] Telah Teratasi'
+                ];
+
+                Notification::send($user, new NewTicket($notifdata));
+            }
             $ticket->update();
             return redirect()->route('usr.ticket')->with('success','Berhasil Edit');
         }catch (QueryException $e) {
