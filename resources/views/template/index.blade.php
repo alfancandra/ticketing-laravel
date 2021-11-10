@@ -95,7 +95,7 @@
                                 <li>
                                     <div class="dropdown-title d-flex justify-content-between align-items-center">
                                         Messages
-                                        <a href="#" class="small">Mark all as read</a>
+                                        {{-- <a href="#" class="small">Mark all as read</a> --}}
                                     </div>
                                 </li>
                                 <li>
@@ -134,18 +134,18 @@
                             <a class="nav-link dropdown-toggle" href="#" id="notifDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fa fa-bell"></i>
-                                <span class="notification">{{ count($notifications) }}</span>
+                                <span class="notification">{{ count(Auth::user()->unreadNotifications) }}</span>
                             </a>
                             <ul class="dropdown-menu notif-box animated fadeIn" aria-labelledby="notifDropdown">
                                 <li>
-                                    <div class="dropdown-title">You have {{ count($notifications) }} new notification</div>
+                                    <div class="dropdown-title">You have {{ count(Auth::user()->unreadNotifications) }} new notification</div>
                                 </li>
                                 <li>
                                     <div class="notif-scroll scrollbar-outer">
                                         <div class="notif-center">
 
                                             @forelse($notifications as $notification)
-                                            <a href="{{ route('usr.showticket', $notification->data['id_ticket']) }}">
+                                            <a href="{{ route('usr.markread', $notification->id) }}" style="{{ empty($notification->read_at) ? 'background: #DCDCDC' : '' }}" class="mark-as-read" data-id="{{ $notification->id }}">
                                                 <div class="notif-icon notif-success"> <i class="fa fa-comment"></i>
                                                 </div>
                                                 <div class="notif-content">
@@ -431,6 +431,7 @@
             fillColor: 'rgba(255, 255, 255, .15)'
         });
     </script>
+
 </body>
 
 </html>

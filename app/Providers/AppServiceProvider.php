@@ -39,7 +39,7 @@ class AppServiceProvider extends ServiceProvider
                 ->where('ticket_pesans.nama','!=',$user->name)
                 ->get();
 
-                $notifications = $user->unreadNotifications;
+                $notifications = $user->Notifications()->limit(5)->get();
             }else{
                 $pesan = Pesan::join('ticket_tickets','ticket_pesans.ticket_id','=','ticket_tickets.id')
                 ->select('ticket_tickets.user_id','ticket_tickets.id as idticket','ticket_pesans.created_at as tglpesan','ticket_pesans.nama','ticket_pesans.pesan as message')
@@ -48,7 +48,7 @@ class AppServiceProvider extends ServiceProvider
                 ->where('ticket_pesans.nama','!=',$user->name)
                 ->get();
 
-                $notifications = $user->unreadNotifications;
+                $notifications = $user->Notifications()->limit(5)->get();
             }
             $view->with(['user' => $pesan,'notifications' => $notifications]);;
           });

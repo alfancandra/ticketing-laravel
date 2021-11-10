@@ -261,4 +261,21 @@ class TicketController extends Controller
         $title = 'Data Ticket Sudah Dibatalkan';
         return view('ticket.index',compact('ticket','title'));
     }
+
+    public function markread($id)
+    {
+        Auth::user()
+            ->unreadNotifications
+            ->where('id',$id)
+            ->markAsRead();
+
+        $notif = Auth::user()
+                ->notifications
+                ->where('id',$id)
+                ->first();
+
+        $ticket_id = $notif->data['id_ticket'];
+
+        return redirect()->route('usr.showticket', $ticket_id);
+    }
 }
