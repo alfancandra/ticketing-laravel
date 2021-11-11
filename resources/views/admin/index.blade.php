@@ -96,7 +96,7 @@
                 <div class="col">
                     <div class="card full-height">
                         <div class="card-body">
-                            <div class="card-title">Overall statistics</div>
+                            <div class="card-title">Data Harian</div>
                             <div class="card-category">Daily information about statistics in system</div>
                             <div class="d-flex flex-wrap justify-content-around pb-2 pt-4">
                                 <div class="px-2 pb-2 pb-md-0 text-center">
