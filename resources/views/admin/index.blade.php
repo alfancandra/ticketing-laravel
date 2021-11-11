@@ -93,17 +93,29 @@
                         </div>
                     </div>
                 </div>
+                @php
+
+                @endphp
                 <div class="col">
                     <div class="card full-height">
                         <div class="card-body">
                             <div class="card-title">Data Harian</div>
                             <div class="card-category">Daily information about statistics in system</div>
                             <div class="d-flex flex-wrap justify-content-around pb-2 pt-4">
-                                <div class="col-md-6">
+                                <div class="col-md-5">
                                     <div class="card">
                                         <div class="card-body">
                                             <div class="chart-container">
                                                 <canvas id="pieChart" style="width: 50%; height: 50%"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="chart-container">
+                                                <canvas id="lineChart"></canvas>
                                             </div>
                                         </div>
                                     </div>
@@ -118,6 +130,7 @@
 @push('js')
 <script>
     var pieChart = document.getElementById('pieChart').getContext('2d');
+    var lineChart = document.getElementById('lineChart').getContext('2d');
     var myPieChart = new Chart(pieChart, {
 			type: 'pie',
 			data: {
@@ -156,49 +169,61 @@
 				}
 			}
 		})
-    Circles.create({
-        id:'circles-1',
-        radius:45,
-        value:{{ count($ticket['harian_belum']) }},
-        maxValue:100,
-        width:7,
-        text: {{ count($ticket['harian_belum']) }},
-        colors:['#f1f1f1', '#FF9E27'],
-        duration:400,
-        wrpClass:'circles-wrp',
-        textClass:'circles-text',
-        styleWrapper:true,
-        styleText:true
-    })
+        var myLineChart = new Chart(lineChart, {
+			type: 'line',
+			data: {
+				labels: [
+                    @php
+                    foreach($ticket['bulanan'] as $d) {
+                        echo "'".$d->month_name."',";
+                    }
+                    @endphp
+                ],
+				datasets: [{
+					label: "Data Ticket",
+					borderColor: "#31ce36",
+					pointBorderColor: "#FFF",
+					pointBackgroundColor: "#31ce36",
+					pointBorderWidth: 2,
+					pointHoverRadius: 4,
+					pointHoverBorderWidth: 1,
+					pointRadius: 4,
+					backgroundColor: 'transparent',
+					fill: true,
+					borderWidth: 2,
+					data: [
+                        @php
+                        foreach($ticket['bulanan'] as $d) {
+                            echo $d->count.',';
+                        }
+                        @endphp
+                    ]
+				}]
+			},
+			options : {
+				responsive: true,
+				maintainAspectRatio: false,
+				legend: {
+					position: 'bottom',
+					labels : {
+						padding: 10,
+						fontColor: '#31ce36',
+					}
+				},
+				tooltips: {
+					bodySpacing: 4,
+					mode:"nearest",
+					intersect: 0,
+					position:"nearest",
+					xPadding:10,
+					yPadding:10,
+					caretPadding:10
+				},
+				layout:{
+					padding:{left:15,right:15,top:15,bottom:15}
+				}
+			}
+		});
 
-    Circles.create({
-        id:'circles-2',
-        radius:45,
-        value:{{ count($ticket['harian_sudah']) }},
-        maxValue:100,
-        width:7,
-        text: {{ count($ticket['harian_sudah']) }},
-        colors:['#f1f1f1', '#2BB930'],
-        duration:400,
-        wrpClass:'circles-wrp',
-        textClass:'circles-text',
-        styleWrapper:true,
-        styleText:true
-    })
-
-    Circles.create({
-        id:'circles-3',
-        radius:45,
-        value:{{ count($ticket['harian_batal']) }},
-        maxValue:100,
-        width:7,
-        text: {{ count($ticket['harian_batal']) }},
-        colors:['#f1f1f1', '#F25961'],
-        duration:400,
-        wrpClass:'circles-wrp',
-        textClass:'circles-text',
-        styleWrapper:true,
-        styleText:true
-    })
     </script>
 @endpush
