@@ -99,17 +99,14 @@
                             <div class="card-title">Data Harian</div>
                             <div class="card-category">Daily information about statistics in system</div>
                             <div class="d-flex flex-wrap justify-content-around pb-2 pt-4">
-                                <div class="px-2 pb-2 pb-md-0 text-center">
-                                    <div id="circles-1"></div>
-                                    <h6 class="fw-bold mt-3 mb-0">New Users</h6>
-                                </div>
-                                <div class="px-2 pb-2 pb-md-0 text-center">
-                                    <div id="circles-2"></div>
-                                    <h6 class="fw-bold mt-3 mb-0">Sales</h6>
-                                </div>
-                                <div class="px-2 pb-2 pb-md-0 text-center">
-                                    <div id="circles-3"></div>
-                                    <h6 class="fw-bold mt-3 mb-0">Subscribers</h6>
+                                <div class="col-md-6">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="chart-container">
+                                                <canvas id="pieChart" style="width: 50%; height: 50%"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -120,13 +117,52 @@
 @endsection
 @push('js')
 <script>
+    var pieChart = document.getElementById('pieChart').getContext('2d');
+    var myPieChart = new Chart(pieChart, {
+			type: 'pie',
+			data: {
+				datasets: [{
+					data: [{{ count($ticket['harian_sudah']) }}, {{ count($ticket['harian_batal']) }}, {{ count($ticket['harian_belum']) }}],
+					backgroundColor :["#31ce36","#f3545d","#fdaf4b"],
+					borderWidth: 0
+				}],
+				labels: ['Teratasi', 'Dibatalkan', 'Belum Diatasi']
+			},
+			options : {
+				responsive: true,
+				maintainAspectRatio: false,
+				legend: {
+					position : 'bottom',
+					labels : {
+						fontColor: 'rgb(154, 154, 154)',
+						fontSize: 11,
+						usePointStyle : true,
+						padding: 20
+					}
+				},
+				pieceLabel: {
+					render: 'value',
+					fontColor: 'white',
+					fontSize: 14,
+				},
+				tooltips: false,
+				layout: {
+					padding: {
+						left: 20,
+						right: 20,
+						top: 20,
+						bottom: 20
+					}
+				}
+			}
+		})
     Circles.create({
         id:'circles-1',
         radius:45,
-        value:60,
-        maxValue:1000,
+        value:{{ count($ticket['harian_belum']) }},
+        maxValue:100,
         width:7,
-        text: 5,
+        text: {{ count($ticket['harian_belum']) }},
         colors:['#f1f1f1', '#FF9E27'],
         duration:400,
         wrpClass:'circles-wrp',
@@ -138,10 +174,10 @@
     Circles.create({
         id:'circles-2',
         radius:45,
-        value:70,
+        value:{{ count($ticket['harian_sudah']) }},
         maxValue:100,
         width:7,
-        text: 36,
+        text: {{ count($ticket['harian_sudah']) }},
         colors:['#f1f1f1', '#2BB930'],
         duration:400,
         wrpClass:'circles-wrp',
@@ -153,10 +189,10 @@
     Circles.create({
         id:'circles-3',
         radius:45,
-        value:40,
+        value:{{ count($ticket['harian_batal']) }},
         maxValue:100,
         width:7,
-        text: 12,
+        text: {{ count($ticket['harian_batal']) }},
         colors:['#f1f1f1', '#F25961'],
         duration:400,
         wrpClass:'circles-wrp',
