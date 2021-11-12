@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Ticket;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use DB;
 
 class DashboardController extends Controller
@@ -63,6 +64,36 @@ class DashboardController extends Controller
 
     public function dashboarduser()
     {
-        return view('dashboarduser');
+        $user_id = Auth::user()->id;
+        $ticket['belum'] = Ticket::where('status',0)->where('user_id',$user_id)->get();
+        $ticket['sudah'] = Ticket::where('status',1)->where('user_id',$user_id)->get();
+        $ticket['batal'] = Ticket::where('status',3)->where('user_id',$user_id)->get();
+        $ticket['semua'] = Ticket::where('user_id',$user_id)->get();
+        // Harian
+        $ticket['harian_belum'] = Ticket::whereDate('created_at',Carbon::today())->where('status',0)->where('user_id',$user_id)->get();
+        $ticket['harian_sudah'] = Ticket::whereDate('updated_at',Carbon::today())->where('status',1)->where('user_id',$user_id)->get();
+        $ticket['harian_batal'] = Ticket::whereDate('created_at',Carbon::today())->where('status',3)->where('user_id',$user_id)->get();
+        $ticket['harian_semua'] = Ticket::whereDate('created_at',Carbon::today())->where('user_id',$user_id)->get();
+        $ticket['bulanan'] = Ticket::select(DB::raw("COUNT(*) as count"), DB::raw("MONTHNAME(created_at) as month_name"),DB::raw('max(created_at) as createdAt'))
+        ->whereYear('created_at', date('Y'))
+        ->groupBy('month_name')
+        ->where('user_id',$user_id)
+        ->orderBy('createdAt')
+        ->get();
+        $ticket['bulanan_belum'] = Ticket::select(DB::raw("COUNT(*) as count"), DB::raw("MONTHNAME(created_at) as month_name"),DB::raw('max(created_at) as createdAt'))
+        ->whereYear('created_at', date('Y'))
+        ->groupBy('month_name')
+        ->orderBy('createdAt')
+        ->where('user_id',$user_id)
+        ->where('status',0)
+        ->get();
+        $ticket['bulanan_batal'] = Ticket::select(DB::raw("COUNT(*) as count"), DB::raw("MONTHNAME(created_at) as month_name"),DB::raw('max(created_at) as createdAt'))
+        ->whereYear('created_at', date('Y'))
+        ->groupBy('month_name')
+        ->orderBy('createdAt')
+        ->where('status',3)
+        ->where('user_id',$user_id)
+        ->get();
+        return view('dashboarduser',compact('ticket'));
     }
 }
