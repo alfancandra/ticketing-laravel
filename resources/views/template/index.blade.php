@@ -27,6 +27,7 @@
     </script>
 
     <!-- CSS Files -->
+    @stack('css')
     <link rel="stylesheet" href="{{ asset('') }}assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ asset('') }}assets/css/atlantis.min.css">
 
