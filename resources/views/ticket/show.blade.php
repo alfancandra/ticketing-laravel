@@ -29,7 +29,7 @@ if($ticket->status==0 && Auth::user()->role_id==0){
             @csrf
             <div class="card">
                 <div class="card-header">
-                    <h3>Ticket {{ $ticket->id }}</h3>
+                    <h3>Detail Ticket</h3>
                 </div>
                 <div class="card-body">
                     <div class="mb-3 row">
