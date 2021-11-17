@@ -92,15 +92,17 @@ class UserController extends Controller
             if($ceksameusername){
                 return redirect()->back()->with(['error' => 'Username Sudah Dipakai Orang lain']);
             }else{
+                
+                $user = User::find($request->user_id);
+                $user->name = $request->name;
+                $user->username = $request->username;
                 if(!empty($request->password)){
                     $this->validate(request(), [
                         'password' => 'required|confirmed'
                     ]);
+                    $user->password = Hash::make($request->password);
                 }
-                $user = User::find($request->user_id);
-                $user->name = $request->name;
-                $user->username = $request->username;
-                $user->password = Hash::make($request->password);
+                
                 $user->role_id = $request->role_id;
                 $user->update();
 

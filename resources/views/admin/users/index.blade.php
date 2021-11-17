@@ -26,8 +26,8 @@
                 <thead>
                 <tr>
                     <th>No</th>
-                    <th>Nama</th>
                     <th>Username</th>
+                    <th>Nama</th>
                     <th>Role</th>
                     <th>Tanggal Dibuat</th>
                     <th style="width: 180px">Action</th>
@@ -38,8 +38,9 @@
                     @foreach($user as $row)
                     <tr>
                         <td>{{ $i++ }}</td>
-                        <td>{{ $row->name }}</td>
                         <td>{{ $row->username }}</td>
+                        <td>{{ $row->name }}</td>
+                        
                         <td style="width:15%">@if($row->role_id==0)
                             <span class="text-success">User</span>
                             @elseif($row->role_id==1)

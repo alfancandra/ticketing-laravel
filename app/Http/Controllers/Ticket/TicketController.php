@@ -78,6 +78,8 @@ class TicketController extends Controller
             'image.*' => 'mimes:jpeg,jpg,png,gif,pdf,doc,docx'
         ]);
 
+        $useradmin = User::where('role_id',1)->get();
+
         if($request->hasFile('image')) {
             foreach($request->file('image') as $file)
             {
@@ -93,22 +95,34 @@ class TicketController extends Controller
             $file->image = json_encode($data);
 
             $file->save();
+
+            // SEND Notification
+            $notifdata = [
+                'id_ticket' => $file->id,
+                'name' => $request->nama,
+                'message' => 'Ticket Baru telah dibuat'
+            ];
+
+            Notification::send($useradmin, new NewTicket($notifdata));
+        }else{
+
+            $ticket = Ticket::create([
+                'nama' => $request->nama,
+                'user_id' => $request->user_id,
+                'pesan' => $request->pesan
+            ]);
+
+            // SEND Notification
+            $notifdata = [
+                'id_ticket' => $ticket->id,
+                'name' => $request->nama,
+                'message' => 'Ticket Baru telah dibuat'
+            ];
+
+            Notification::send($useradmin, new NewTicket($notifdata));
         }
 
-        $useradmin = User::where('role_id',1)->get();
-
-        /// insert setiap request dari form ke dalam database via model
-        /// jika menggunakan metode ini, maka nama field dan nama form harus sama
-        $ticket = Ticket::create($request->all());
-
-        // SEND Notification
-        $notifdata = [
-            'id_ticket' => $ticket->id,
-            'name' => $request->nama,
-            'message' => 'Ticket Baru telah dibuat'
-        ];
-
-        Notification::send($useradmin, new NewTicket($notifdata));
+        
         return redirect()->route('usr.ticket')
                         ->with('success','Ticket Berhasil Terkirim');
     }
