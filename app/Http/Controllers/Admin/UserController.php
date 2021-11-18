@@ -46,16 +46,11 @@ class UserController extends Controller
         }
     }
 
-    public function changerole($id)
+    public function changerole($id,$role)
     {
         $user = User::find($id);
         $auth = Auth::user();
         if($user && $auth->id != $id){
-            if($user->role_id==0){
-                $role = 1;
-            }else{
-                $role = 0;
-            }
             $user->role_id = $role;
             $user->update();
             return redirect()->route('adm.datauser')->with(['success' => 'Success Ubah role '.$user->username]);

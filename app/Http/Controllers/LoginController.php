@@ -17,6 +17,8 @@ class LoginController extends Controller
             return redirect() -> route('usr.dashboarduser');
         } elseif (Auth::check() && Auth::user()->role_id==1) {
             return redirect() -> route('adm.dashboardadmin');
+        }elseif (Auth::check() && Auth::user()->role_id==2) {
+            return redirect() -> route('adm.dashboardadmin');
         }
         return view('auth.login');
     }

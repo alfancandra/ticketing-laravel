@@ -19,7 +19,7 @@ class UserLogin
     public function handle(Request $request, Closure $next)
     {
         $auth = auth()->user();
-        if($auth && ($auth->role_id==1 || $auth->role_id == 0)){
+        if($auth && ($auth->role_id==1 || $auth->role_id == 0 || $auth->role_id == 2)){
             return $next($request);
         }else{
             return redirect()->route('login');

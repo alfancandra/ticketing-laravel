@@ -115,7 +115,7 @@ if($ticket->status==0 && Auth::user()->role_id==0){
                                 <span class="badge badge-danger">Ticket Dibatalkan</span>
                             @endif --}}
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" {{ $ticket->status==1 ? 'checked' : '' }} name="statusticket" value="1" id="inlineRadio1" value="option1">
+                                <input class="form-check-input" type="radio" {{ $ticket->status==1 ? 'checked' : '' }} name="statusticket" value="1" id="inlineRadio1" value="option1" {{ Auth::user()->role_id==2 ? 'disabled' : '' }}>
                                 @if($ticket->status==1)
                                 <span class="badge badge-success">Teratasi</span>
                                 @else
@@ -123,7 +123,7 @@ if($ticket->status==0 && Auth::user()->role_id==0){
                                 @endif
                             </div>
                               <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" {{ $ticket->status==0 ? 'checked' : '' }} name="statusticket" value="0" id="inlineRadio2" value="option1">
+                                <input class="form-check-input" type="radio" {{ $ticket->status==0 ? 'checked' : '' }} name="statusticket" value="0" id="inlineRadio2" value="option1" {{ Auth::user()->role_id==2 ? 'disabled' : '' }}>
                                 @if($ticket->status==0)
                                 <span class="badge badge-warning" for="inlineRadio2">Belum Diatasi</span>
                                 @else
@@ -131,7 +131,7 @@ if($ticket->status==0 && Auth::user()->role_id==0){
                                 @endif
                             </div>
                               <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="statusticket" {{ $ticket->status==3 ? 'checked' : '' }} value="3" id="inlineRadio3" value="option2">
+                                <input class="form-check-input" type="radio" name="statusticket" {{ $ticket->status==3 ? 'checked' : '' }} value="3" id="inlineRadio3" value="option2" {{ Auth::user()->role_id==2 ? 'disabled' : '' }}>
                                 @if($ticket->status==3)
                                 <span class="badge badge-danger">Ticket Dibatalkan</span>
                                 @else
@@ -144,7 +144,9 @@ if($ticket->status==0 && Auth::user()->role_id==0){
                     <div class="mb-3 row">
                         <label for="staticEmail" class="col-sm-2 col-form-label"></label>
                         <div class="col-sm-10">
+                        @if(Auth::user()->role_id!=2)
                                 <button type="submit" class="btn btn-success">Simpan</button>
+                        @endif
                         </form>
                             <a href="{{ route('usr.ticket') }}" class="btn btn-primary">Kembali</a>
                         </div>
@@ -201,6 +203,7 @@ if($ticket->status==0 && Auth::user()->role_id==0){
                             <input type="hidden" name="ticket_id" value="{{ $ticket->id }}">
                             <input type="hidden" name="nama" value="{{ Auth::user()->name }}">
                             <div class="form-group row">
+                                @if(Auth::user()->role_id!=2)
                                 <div class="col-sm-10" style="margin-left: -20px">
                                     <input type="text" class="form-control" name="pesan" placeholder="Isi Pesan">
                                 </div>
@@ -208,7 +211,7 @@ if($ticket->status==0 && Auth::user()->role_id==0){
                                 <div class="col-sm-2" style="margin-left: -25px">
                                     <button class="btn btn-success">Kirim</button>
                                 </div>
-
+                                @endif
                             </div>
 
                     </div>

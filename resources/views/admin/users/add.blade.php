@@ -42,8 +42,9 @@
                             <div class="mb-3">
                                 <label for="defaultSelect">Role</label>
                                 <select class="form-control form-control" name="role_id" id="defaultSelect">
-                                    <option value="0">User</option>
-                                    <option value="1">Admin</option>
+                                    <option value="0">Admin</option>
+                                    <option value="1">Super Admin</option>
+                                    <option value="2">Executive</option>
                                 </select>
                             </div>
                             <div class="mb-3">

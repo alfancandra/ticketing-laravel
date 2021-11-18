@@ -20,7 +20,9 @@
                     {{ $message }}
                 </div>
             @endif
-            <a href="{{ route('usr.addticket') }}" class="btn btn-primary">Tambah</a>
+            @if(Auth::user()->role_id!=2)
+                <a href="{{ route('usr.addticket') }}" class="btn btn-primary">Tambah</a>
+            @endif
             <hr />
             <table class="table-responsive table-hover table-bordered dataTable" style="width: 100%" cellpadding="4" id="basic-datatables">
                 <thead>

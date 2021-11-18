@@ -16,14 +16,14 @@ class TicketController extends Controller
     public function index()
     {
         $auth = Auth::user();
-        if($auth->role_id==1){
+        if($auth->role_id==1 || $auth->role_id==2){
             $ticket = Ticket::where('status',0)
             ->orderBy('created_at','ASC')
             ->get();
         }else{
             $ticket = Ticket::where('status',0)
             ->where('user_id',$auth->id)
-            ->orderBy('created_at','ASC')
+            ->orderBy('created_at','DESC')
             ->get();
         }
         $title = 'Data Ticket Belum Diatasi';
@@ -33,7 +33,7 @@ class TicketController extends Controller
     public function nonaktif()
     {
         $auth = Auth::user();
-        if($auth->role_id==1){
+        if($auth->role_id==1 || $auth->role_id==2){
             $ticket = Ticket::where('status',1)
             ->orderBy('updated_at','DESC')
             ->get();
@@ -50,12 +50,12 @@ class TicketController extends Controller
     public function allticket()
     {
         $auth = Auth::user();
-        if($auth->role_id==1){
-            $ticket = Ticket::orderBy('updated_at','DESC')
+        if($auth->role_id==1 || $auth->role_id==2){
+            $ticket = Ticket::orderBy('created_at','DESC')
             ->get();
         }else{
             $ticket = Ticket::where('user_id',$auth->id)
-            ->orderBy('updated_at','DESC')
+            ->orderBy('created_at','DESC')
             ->get();
         }
         $title = 'Data Semua Ticket';

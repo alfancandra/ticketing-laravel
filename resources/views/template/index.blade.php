@@ -220,7 +220,7 @@
                     <ul class="nav nav-primary">
                         <li
                             class="nav-item {{ Request::segment(1) === 'admin' || Request::segment(1) === 'dashboard' ? 'active' : null }}">
-                            @if (Auth::user()->role_id == 1)
+                            @if (Auth::user()->role_id == 1 || Auth::user()->role_id == 2)
                                 <a href="/admin" class="collapsed" aria-expanded="false">
                                     <i class="fas fa-home"></i>
                                     <p>Dashboard</p>

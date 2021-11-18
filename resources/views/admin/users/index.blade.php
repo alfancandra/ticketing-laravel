@@ -42,9 +42,11 @@
                         <td>{{ $row->name }}</td>
                         
                         <td style="width:15%">@if($row->role_id==0)
-                            <span class="text-success">User</span>
+                            <span class="text-success">Admin</span>
                             @elseif($row->role_id==1)
-                            <span class="text-success">Admin</span><br>
+                            <span class="text-success">Super Admin</span><br>
+                            @elseif($row->role_id==2)
+                            <span class="text-success">Executive</span>
                             @endif</td>
                         <td style="width:15%">{{ date('d-m-Y', strtotime($row->created_at)) }}<br>{{ date('H:i', strtotime($row->created_at)) }} WIB</td>
 
@@ -58,9 +60,14 @@
                                 </button>
                                 <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
                                 @if($row->role_id==0)
-                                  <a class="dropdown-item" href="{{ route('adm.changerole',$row->id) }}">Admin</a>
+                                  <a class="dropdown-item" href="{{ route('adm.changerole',['id'=>$row->id,'role'=> 1]) }}">Super Admin</a>
+                                  <a class="dropdown-item" href="{{ route('adm.changerole',['id'=>$row->id,'role'=> 2]) }}">Executive</a>
+                                @elseif($row->role_id==1)
+                                  <a class="dropdown-item" href="{{ route('adm.changerole',['id'=>$row->id,'role'=> 0]) }}">Admin</a>
+                                  <a class="dropdown-item" href="{{ route('adm.changerole',['id'=>$row->id,'role'=> 2]) }}">Executive</a>
                                 @else
-                                  <a class="dropdown-item" href="{{ route('adm.changerole',$row->id) }}">User</a>
+                                  <a class="dropdown-item" href="{{ route('adm.changerole',['id'=>$row->id,'role'=> 1]) }}">Super Admin</a>
+                                  <a class="dropdown-item" href="{{ route('adm.changerole',['id'=>$row->id,'role'=> 0]) }}">Admin</a>
                                 @endif
                                 </div>
                             </div>
