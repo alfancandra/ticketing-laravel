@@ -19,7 +19,7 @@ class DashboardController extends Controller
         $ticket['semua'] = Ticket::all();
         // Harian
         $ticket['harian_belum'] = Ticket::where('status',0)->where('created_at', '>', now()->subDays(30)->endOfDay())->get();
-        $ticket['harian_sudah'] = Ticket::where('status',1)->where('updated_at', '>', now()->subDays(30)->endOfDay())->get();
+        $ticket['harian_sudah'] = Ticket::where('status',1)->where('created_at', '>', now()->subDays(30)->endOfDay())->get();
         $ticket['harian_batal'] = Ticket::where('status',3)->where('created_at', '>', now()->subDays(30)->endOfDay())->get();
         $ticket['harian_semua'] = Ticket::whereDate('created_at',Carbon::today())->get();
         $ticket['bulanan'] = Ticket::select(DB::raw("COUNT(*) as count"), DB::raw("MONTHNAME(created_at) as month_name"),DB::raw('max(created_at) as createdAt'))
@@ -64,27 +64,24 @@ class DashboardController extends Controller
 
     public function dashboarduser()
     {
-        $user_id = Auth::user()->id;
-        $ticket['belum'] = Ticket::where('status',0)->where('user_id',$user_id)->get();
-        $ticket['sudah'] = Ticket::where('status',1)->where('user_id',$user_id)->get();
-        $ticket['batal'] = Ticket::where('status',3)->where('user_id',$user_id)->get();
-        $ticket['semua'] = Ticket::where('user_id',$user_id)->get();
+        $ticket['belum'] = Ticket::where('status',0)->get();
+        $ticket['sudah'] = Ticket::where('status',1)->get();
+        $ticket['batal'] = Ticket::where('status',3)->get();
+        $ticket['semua'] = Ticket::all();
         // Harian
-        $ticket['harian_belum'] = Ticket::where('created_at', '>', now()->subDays(30)->endOfDay())->where('status',0)->where('user_id',$user_id)->get();
-        $ticket['harian_sudah'] = Ticket::where('updated_at', '>', now()->subDays(30)->endOfDay())->where('status',1)->where('user_id',$user_id)->get();
-        $ticket['harian_batal'] = Ticket::where('created_at', '>', now()->subDays(30)->endOfDay())->where('status',3)->where('user_id',$user_id)->get();
-        $ticket['harian_semua'] = Ticket::where('created_at', '>', now()->subDays(30)->endOfDay())->where('user_id',$user_id)->get();
+        $ticket['harian_belum'] = Ticket::where('created_at', '>', now()->subDays(30)->endOfDay())->where('status',0)->get();
+        $ticket['harian_sudah'] = Ticket::where('created_at', '>', now()->subDays(30)->endOfDay())->where('status',1)->get();
+        $ticket['harian_batal'] = Ticket::where('created_at', '>', now()->subDays(30)->endOfDay())->where('status',3)->get();
+        $ticket['harian_semua'] = Ticket::where('created_at', '>', now()->subDays(30)->endOfDay())->get();
         $ticket['bulanan'] = Ticket::select(DB::raw("COUNT(*) as count"), DB::raw("MONTHNAME(created_at) as month_name"),DB::raw('max(created_at) as createdAt'))
         ->whereYear('created_at', date('Y'))
         ->groupBy('month_name')
-        ->where('user_id',$user_id)
         ->orderBy('createdAt')
         ->get();
         $ticket['bulanan_belum'] = Ticket::select(DB::raw("COUNT(*) as count"), DB::raw("MONTHNAME(created_at) as month_name"),DB::raw('max(created_at) as createdAt'))
         ->whereYear('created_at', date('Y'))
         ->groupBy('month_name')
         ->orderBy('createdAt')
-        ->where('user_id',$user_id)
         ->where('status',0)
         ->get();
         $ticket['bulanan_batal'] = Ticket::select(DB::raw("COUNT(*) as count"), DB::raw("MONTHNAME(created_at) as month_name"),DB::raw('max(created_at) as createdAt'))
@@ -92,7 +89,6 @@ class DashboardController extends Controller
         ->groupBy('month_name')
         ->orderBy('createdAt')
         ->where('status',3)
-        ->where('user_id',$user_id)
         ->get();
         return view('dashboarduser',compact('ticket'));
     }

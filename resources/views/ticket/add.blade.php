@@ -23,6 +23,7 @@
                             </div>
                             <div class="mb-3">
                                 <button class="btn btn-success" type="submit">Kirim</button>
+                                <a href="{{ route('usr.ticket') }}" class="btn btn-primary">Kembali</a>
                             </div>
                         </form>
                     </div>

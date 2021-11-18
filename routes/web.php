@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\Ticket\TicketController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\DashboardController;
 
 /*
@@ -45,5 +46,7 @@ Route::group(['middleware' => ["UserLogin"], 'as' => 'usr.'], function() {
     Route::get('/notif/read/{id}', [TicketController::class,'markread'])->name('markread');
     Route::get('/notifications',[NotificationController::class,'index'])->name('notifications');
 
+    Route::get('/profile',[UserController::class,'profile'])->name('profile');
+    Route::post('profile',[UserController::class,'updateprofile'])->name('updateprofile');
 });
 

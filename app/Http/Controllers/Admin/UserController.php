@@ -88,7 +88,7 @@ class UserController extends Controller
             if($ceksameusername){
                 return redirect()->back()->with(['error' => 'Username Sudah Dipakai Orang lain']);
             }else{
-                
+
                 $user = User::find($request->user_id);
                 $user->name = $request->name;
                 $user->username = $request->username;
@@ -98,7 +98,7 @@ class UserController extends Controller
                     ]);
                     $user->password = Hash::make($request->password);
                 }
-                
+
                 $user->role_id = $request->role_id;
                 $user->update();
 
@@ -106,6 +106,47 @@ class UserController extends Controller
             }
         } catch (QueryException $e) {
             return redirect()->route('adm.datauser')->with(['error' => $e->errorInfo]);
+        }
+    }
+
+    public function profile()
+    {
+        $id = Auth::user()->id;
+        $user = User::where('id',$id)->first();
+        return view('profile',compact('user'));
+    }
+
+    public function updateprofile(Request $request)
+    {
+        // Validasi data
+        $this->validate(request(), [
+            'name' => 'required|max:255',
+            'username' => 'required'
+        ]);
+        $id = Auth::user()->id;
+        try{
+            $ceksameusername = User::where('id','!=',$id)
+            ->where('username',$request->username)
+            ->first();
+            if($ceksameusername){
+                return redirect()->back()->with(['error' => 'Username Sudah Dipakai Orang lain']);
+            }else{
+
+                $user = User::find($id);
+                $user->name = $request->name;
+                $user->username = $request->username;
+                if(!empty($request->password)){
+                    $this->validate(request(), [
+                        'password' => 'required|confirmed'
+                    ]);
+                    $user->password = Hash::make($request->password);
+                }
+                $user->update();
+
+                return redirect()->route('usr.profile')->with(['success' => 'Success Edit Profile']);
+            }
+        }catch (QueryException $e) {
+            return redirect()->route('usr.profile')->with(['error' => $e->errorInfo]);
         }
     }
 }

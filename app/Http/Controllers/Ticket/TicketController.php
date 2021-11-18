@@ -51,7 +51,7 @@ class TicketController extends Controller
             ->orderBy('updated_at','DESC')
             ->get();
         }
-        $title = 'Data Ticket Belum Diatasi';
+        $title = 'Data Ticket Teratasi';
         return view('ticket.index',compact('ticket','title'));
     }
 
@@ -76,6 +76,9 @@ class TicketController extends Controller
 
     public function add()
     {
+        if (Auth::check() && Auth::user()->role_id==2) {
+            return redirect() -> route('usr.dashboarduser');
+        }
         return view('ticket.add');
     }
 
@@ -300,7 +303,7 @@ class TicketController extends Controller
             ->orderBy('created_at','DESC')
             ->get();
         }
-        $title = 'Data Ticket Sudah Dibatalkan';
+        $title = 'Data Ticket Dibatalkan';
         return view('ticket.index',compact('ticket','title'));
     }
 

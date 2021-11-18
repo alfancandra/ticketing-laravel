@@ -50,9 +50,10 @@
                             <div class="mb-3">
                                 <label for="defaultSelect">Role</label>
                                 <select class="form-control form-control" name="role_id" id="defaultSelect">
+                                    <option value="2" {{ $user->role_id == 2 ? 'selected' : '' }}>Executive</option>
                                     <option value="0" {{ $user->role_id == 0 ? 'selected' : '' }}>Admin</option>
                                     <option value="1" {{ $user->role_id == 1 ? 'selected' : '' }}>Super Admin</option>
-                                    <option value="2" {{ $user->role_id == 2 ? 'selected' : '' }}>Executive</option>
+                                    
                                 </select>
                                 @if ($errors->has('role_id'))<small class="text-danger" role="alert">{{ $errors->first('email') }}</small>@endif
                             </div>

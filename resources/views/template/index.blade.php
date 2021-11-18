@@ -102,26 +102,31 @@
                                 <li>
                                     <div class="message-notif-scroll scrollbar-outer">
                                         <div class="notif-center">
-                                            @foreach ($user as $p)
-                                                <a href="{{ route('usr.showticket', $p->idticket) }}">
-                                                    <div class="notif-img">
-                                                        <img src="{{ asset('') }}assets/img/profile.png"
-                                                            alt="Img Profile">
-                                                    </div>
-                                                    <div class="notif-content">
-                                                        <span class="subject">{{ $p->nama }} -
-                                                            TICKET[{{ $p->idticket }}]</span>
-                                                        <span class="block" style="display: block;
-                                                    width: 100px;
-                                                    overflow: hidden;
-                                                    white-space: nowrap;
-                                                    text-overflow: ellipsis;">
-                                                            {{ $p->message }}
-                                                        </span>
-                                                        <span class="time">{{ \Carbon\Carbon::parse($p->tglpesan)->diffForHumans() }}</span>
-                                                    </div>
-                                                </a>
-                                            @endforeach
+                                            @if(!empty($user))
+                                                @forelse ($user as $p)
+                                                    <a href="{{ route('usr.showticket', $p->idticket) }}">
+                                                        <div class="notif-img">
+                                                            <img src="{{ asset('') }}assets/img/profile.png"
+                                                                alt="Img Profile">
+                                                        </div>
+                                                        <div class="notif-content">
+                                                            <span class="subject">{{ $p->nama }} -
+                                                                TICKET[{{ $p->idticket }}]</span>
+                                                            <span class="block" style="display: block;
+                                                        width: 100px;
+                                                        overflow: hidden;
+                                                        white-space: nowrap;
+                                                        text-overflow: ellipsis;">
+                                                                {{ $p->message }}
+                                                            </span>
+                                                            <span class="time">{{ \Carbon\Carbon::parse($p->tglpesan)->diffForHumans() }}</span>
+                                                        </div>
+                                                    </a>
+
+                                                @empty
+                                                <div class="text-center">There are no new notifications</div>
+                                                @endforelse
+                                            @endif
                                         </div>
                                     </div>
                                 </li>
@@ -144,7 +149,7 @@
                                 <li>
                                     <div class="notif-scroll scrollbar-outer">
                                         <div class="notif-center">
-
+                                        @if(!empty($user))
                                             @forelse($notifications as $notification)
                                             <a href="{{ route('usr.markread', $notification->id) }}" style="{{ empty($notification->read_at) ? 'background: #DCDCDC' : '' }}" class="mark-as-read" data-id="{{ $notification->id }}">
                                                 <div class="notif-icon notif-success"> <i class="fa fa-comment"></i>
@@ -159,7 +164,7 @@
                                             @empty
                                                 <div class="text-center">There are no new notifications</div>
                                             @endforelse
-
+                                        @endif
                                         </div>
                                     </div>
                                 </li>
@@ -186,20 +191,14 @@
                                                     src="{{ asset('') }}assets/img/profile.jpg" alt="image profile"
                                                     class="avatar-img rounded"></div>
                                             <div class="u-text">
-                                                <h4>{{ Auth::user()->nama }}</h4>
-                                                <p class="text-muted">{{ Auth::user()->username }}</p><a
-                                                    href="profile.html" class="btn btn-xs btn-secondary btn-sm">View
-                                                    Profile</a>
+                                                <h4>{{ Auth::user()->name }}</h4>
+                                                <p class="text-muted">{{ Auth::user()->username }}</p>
                                             </div>
                                         </div>
                                     </li>
                                     <li>
                                         <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="#">My Profile</a>
-                                        <a class="dropdown-item" href="#">My Balance</a>
-                                        <a class="dropdown-item" href="#">Inbox</a>
-                                        <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="#">Account Setting</a>
+                                        <a class="dropdown-item" href="{{ route('usr.profile') }}">Account Setting</a>
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="{{ route('logout') }}">Logout</a>
                                     </li>
