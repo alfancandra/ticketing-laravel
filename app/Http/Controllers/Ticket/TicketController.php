@@ -18,10 +18,14 @@ class TicketController extends Controller
         $auth = Auth::user();
         if($auth->role_id==1 || $auth->role_id==2){
             $ticket = Ticket::where('status',0)
+            ->select('ticket_tickets.id as id','users.name as nama','ticket_tickets.pesan','ticket_tickets.created_at','ticket_tickets.updated_at','ticket_tickets.status','ticket_tickets.image')
+            ->join('users','ticket_tickets.user_id','=','users.id')
             ->orderBy('created_at','ASC')
             ->get();
         }else{
             $ticket = Ticket::where('status',0)
+            ->select('ticket_tickets.id as id','users.name as nama','ticket_tickets.pesan','ticket_tickets.created_at','ticket_tickets.updated_at','ticket_tickets.status','ticket_tickets.image')
+            ->join('users','ticket_tickets.user_id','=','users.id')
             ->where('user_id',$auth->id)
             ->orderBy('created_at','DESC')
             ->get();
@@ -35,10 +39,14 @@ class TicketController extends Controller
         $auth = Auth::user();
         if($auth->role_id==1 || $auth->role_id==2){
             $ticket = Ticket::where('status',1)
+            ->select('ticket_tickets.id as id','users.name as nama','ticket_tickets.pesan','ticket_tickets.created_at','ticket_tickets.updated_at','ticket_tickets.status','ticket_tickets.image')
+            ->join('users','ticket_tickets.user_id','=','users.id')
             ->orderBy('updated_at','DESC')
             ->get();
         }else{
             $ticket = Ticket::where('status',1)
+            ->select('ticket_tickets.id as id','users.name as nama','ticket_tickets.pesan','ticket_tickets.created_at','ticket_tickets.updated_at','ticket_tickets.status','ticket_tickets.image')
+            ->join('users','ticket_tickets.user_id','=','users.id')
             ->where('user_id',$auth->id)
             ->orderBy('updated_at','DESC')
             ->get();
@@ -51,10 +59,14 @@ class TicketController extends Controller
     {
         $auth = Auth::user();
         if($auth->role_id==1 || $auth->role_id==2){
-            $ticket = Ticket::orderBy('created_at','DESC')
+            $ticket = Ticket::orderBy('ticket_tickets.created_at','DESC')
+            ->select('ticket_tickets.id as id','users.name as nama','ticket_tickets.pesan','ticket_tickets.created_at','ticket_tickets.updated_at','ticket_tickets.status','ticket_tickets.image')
+            ->join('users','ticket_tickets.user_id','=','users.id')
             ->get();
         }else{
-            $ticket = Ticket::where('user_id',$auth->id)
+            $ticket = Ticket::where('ticket_tickets.user_id',$auth->id)
+            ->select('ticket_tickets.id as id','users.name as nama','ticket_tickets.pesan','ticket_tickets.created_at','ticket_tickets.updated_at','ticket_tickets.status','ticket_tickets.image')
+            ->join('users','ticket_tickets.user_id','=','users.id')
             ->orderBy('created_at','DESC')
             ->get();
         }
@@ -152,8 +164,13 @@ class TicketController extends Controller
 
     public function show($id)
     {
-        $ticket = Ticket::where('id',$id)->first();
-        $pesan = Pesan::where('ticket_id',$id)->orderBy('created_at','DESC')->get();
+        $ticket = Ticket::where('ticket_tickets.id',$id)
+        ->select('ticket_tickets.id as id','users.name as nama','ticket_tickets.pesan','ticket_tickets.created_at','ticket_tickets.updated_at','ticket_tickets.status','ticket_tickets.image')
+            ->join('users','ticket_tickets.user_id','=','users.id')
+        ->first();
+        $pesan = Pesan::where('ticket_id',$id)
+        ->orderBy('created_at','DESC')
+        ->get();
         return view('ticket.show',compact('ticket','pesan'));
     }
 

@@ -5,7 +5,7 @@
     <div class="col-md-12">
         <div class="card">
             <div class="card-header">
-                <div class="card-title">Tambah Data User</div>
+                <div class="card-title">Edit Data User</div>
             </div>
             <div class="card-body">
                 <div class="row">

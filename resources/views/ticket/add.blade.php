@@ -12,14 +12,10 @@
                     <div class="col">
                         <form action="{{ route('usr.storeticket') }}" method="post" enctype="multipart/form-data">
                             @csrf
-                            <div class="mb-3">
-                                <label for="exampleFormControlInput1" class="form-label">Nama</label>
-                                <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
-                                <input type="text" name="nama" class="form-control" value="<?= old('nama') ?>" placeholder="Input Nama Lengkap">
-                            </div>
+                            
                             <div class="mb-3">
                                 <label for="exampleFormControlTextarea1" class="form-label">Pesan</label>
-                                <textarea class="form-control" value="<?= old('pesan') ?>" name="pesan" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                <textarea class="form-control" value="<?= old('pesan') ?>" name="pesan" id="exampleFormControlTextarea1" rows="5"></textarea>
                             </div>
                             <div class="mb-3">
                                 <label style="mb-3" for="exampleFormControlFile1">Input Screenshot</label>

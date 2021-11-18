@@ -46,7 +46,7 @@ if($ticket->status==0 && Auth::user()->role_id==0){
                     <div class="mb-3 row">
                         <label for="staticEmail" class="col-sm-2 col-form-label">Pesan</label>
                         <div class="col-sm-10">
-                            <textarea class="" name="pesan" rows="2" style="padding:10px;width:100%;border:1px solid #e4e3e3cb;height:100%;-webkit-text-fill-color: black;color:black" value="{{ $ticket->pesan }}" {{ $user == true ? '' : 'readonly' }}>{{ $ticket->pesan }}</textarea>
+                            <textarea class="" name="pesan" rows="5" style="padding:10px;width:100%;border:1px solid #e4e3e3cb;height:100%;-webkit-text-fill-color: black;color:black" value="{{ $ticket->pesan }}" {{ $user == true ? '' : 'readonly' }}>{{ $ticket->pesan }}</textarea>
                         </div>
                     </div>
                     @if (!empty($ticket->image))
