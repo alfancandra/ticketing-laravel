@@ -89,6 +89,19 @@ if($ticket->status==0 && Auth::user()->role_id==0){
                     @endif
 
                     <div class="mb-3 row">
+                        <label for="staticEmail" class="col-sm-2 col-form-label">Priority</label>
+                        <div class="col-sm-10">
+                            <span class="form-control">@if($ticket->priority==0)
+                                <span class="badge badge-warning">Rendah</span>
+                                @elseif($ticket->priority==1)
+                                <span class="badge badge-custom" style="background: #349342;color:white">Sedang</span><br>
+                                @elseif($ticket->priority==2)
+                                <span class="badge badge-danger">Tinggi</span>
+                                @endif</span>
+                        </div>
+                    </div>
+
+                    <div class="mb-3 row">
                         <label for="staticEmail" class="col-sm-2 col-form-label">Tanggal Dibuat</label>
                         <div class="col-sm-10">
                             <span class="form-control">{{ $ticket->updated_at }} WIB</span>

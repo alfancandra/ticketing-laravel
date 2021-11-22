@@ -12,10 +12,18 @@
                     <div class="col">
                         <form action="{{ route('usr.storeticket') }}" method="post" enctype="multipart/form-data">
                             @csrf
-                            
+
                             <div class="mb-3">
                                 <label for="exampleFormControlTextarea1" class="form-label">Pesan</label>
                                 <textarea class="form-control" value="<?= old('pesan') ?>" name="pesan" id="exampleFormControlTextarea1" rows="5"></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="defaultSelect">Priority</label>
+                                <select class="form-control form-control" name="priority" id="defaultSelect">
+                                    <option value="0">Rendah</option>
+                                    <option value="1">Sedang</option>
+                                    <option value="2">Tinggi</option>
+                                </select>
                             </div>
                             <div class="mb-3">
                                 <label style="mb-3" for="exampleFormControlFile1">Input Screenshot</label>

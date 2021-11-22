@@ -32,6 +32,7 @@
                     <th>Permasalahan</th>
                     <th>Ticket</th>
                     <th>Support</th>
+                    <th>Priority</th>
                     <th>Action</th>
                 </tr>
                 </thead>
@@ -68,6 +69,14 @@
                             @else
                             <span class="badge badge-danger">Ticket Dibatalkan</span>
                             @endif</td>
+                        <td class="align-top" style="width:10%">
+                            @if($row->priority==0)
+                                <span class="badge badge-warning">Rendah</span>
+                                @elseif($row->priority==1)
+                                <span class="badge badge-custom" style="background: #349342;color:white">Sedang</span><br>
+                                @elseif($row->priority==2)
+                                <span class="badge badge-danger">Tinggi</span>
+                                @endif</td>
                         <td style="width: 10%" class="align-top">
                             <a href="{{ route('usr.showticket',$row->id) }}" class="btn btn-primary btn-sm">Detail</a>
 
@@ -83,7 +92,7 @@
     <script >
 		$(document).ready(function() {
 			$('#basic-datatables').DataTable({
-                
+
 			});
 
 			$('#multi-filter-select').DataTable( {

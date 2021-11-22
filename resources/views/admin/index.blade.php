@@ -9,7 +9,7 @@
                 <h5 class="text-white op-7 mb-2">Support Ticket BKPP Kabupaten Sleman</h5>
             </div>
             <div class="ml-md-auto py-2 py-md-0">
-                <a href="{{ route('usr.ticket') }}" class="btn btn-white btn-border btn-round mr-2">Data Ticket</a>
+                <a href="{{ route('usr.ticket') }}" class="btn btn-white btn-border btn-round mr-2">Ticket Aktif</a>
                 @if(Auth::user()->role_id!=2)
                 <a href="{{ route('usr.addticket') }}" class="btn btn-secondary btn-round">Tambah Ticket</a>
                 @endif
@@ -55,7 +55,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col">
-                            <div class="card-title">Data Dalam 30 Hari Terakhir</div>
+                            <div class="card-title">Data Ticket 30 Hari Terakhir</div>
                             <div class="card-category">Statistic</div>
                             <div class="d-flex flex-wrap justify-content-around pb-2 pt-4">
                                 <div class="col">

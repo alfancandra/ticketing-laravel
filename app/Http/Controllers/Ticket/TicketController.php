@@ -18,13 +18,13 @@ class TicketController extends Controller
         $auth = Auth::user();
         if($auth->role_id==1 || $auth->role_id==2){
             $ticket = Ticket::where('status',0)
-            ->select('ticket_tickets.id as id','users.name as nama','ticket_tickets.pesan','ticket_tickets.created_at','ticket_tickets.updated_at','ticket_tickets.status','ticket_tickets.image')
+            ->select('ticket_tickets.id as id','users.name as nama','ticket_tickets.pesan','ticket_tickets.created_at','ticket_tickets.updated_at','ticket_tickets.status','ticket_tickets.image','ticket_tickets.priority')
             ->join('users','ticket_tickets.user_id','=','users.id')
             ->orderBy('created_at','ASC')
             ->get();
         }else{
             $ticket = Ticket::where('status',0)
-            ->select('ticket_tickets.id as id','users.name as nama','ticket_tickets.pesan','ticket_tickets.created_at','ticket_tickets.updated_at','ticket_tickets.status','ticket_tickets.image')
+            ->select('ticket_tickets.id as id','users.name as nama','ticket_tickets.pesan','ticket_tickets.created_at','ticket_tickets.updated_at','ticket_tickets.status','ticket_tickets.image','ticket_tickets.priority')
             ->join('users','ticket_tickets.user_id','=','users.id')
             ->where('user_id',$auth->id)
             ->orderBy('created_at','DESC')
@@ -39,13 +39,13 @@ class TicketController extends Controller
         $auth = Auth::user();
         if($auth->role_id==1 || $auth->role_id==2){
             $ticket = Ticket::where('status',1)
-            ->select('ticket_tickets.id as id','users.name as nama','ticket_tickets.pesan','ticket_tickets.created_at','ticket_tickets.updated_at','ticket_tickets.status','ticket_tickets.image')
+            ->select('ticket_tickets.id as id','users.name as nama','ticket_tickets.pesan','ticket_tickets.created_at','ticket_tickets.updated_at','ticket_tickets.status','ticket_tickets.image','ticket_tickets.priority')
             ->join('users','ticket_tickets.user_id','=','users.id')
             ->orderBy('updated_at','DESC')
             ->get();
         }else{
             $ticket = Ticket::where('status',1)
-            ->select('ticket_tickets.id as id','users.name as nama','ticket_tickets.pesan','ticket_tickets.created_at','ticket_tickets.updated_at','ticket_tickets.status','ticket_tickets.image')
+            ->select('ticket_tickets.id as id','users.name as nama','ticket_tickets.pesan','ticket_tickets.created_at','ticket_tickets.updated_at','ticket_tickets.status','ticket_tickets.image','ticket_tickets.priority')
             ->join('users','ticket_tickets.user_id','=','users.id')
             ->where('user_id',$auth->id)
             ->orderBy('updated_at','DESC')
@@ -60,12 +60,12 @@ class TicketController extends Controller
         $auth = Auth::user();
         if($auth->role_id==1 || $auth->role_id==2){
             $ticket = Ticket::orderBy('ticket_tickets.created_at','DESC')
-            ->select('ticket_tickets.id as id','users.name as nama','ticket_tickets.pesan','ticket_tickets.created_at','ticket_tickets.updated_at','ticket_tickets.status','ticket_tickets.image')
+            ->select('ticket_tickets.id as id','users.name as nama','ticket_tickets.pesan','ticket_tickets.created_at','ticket_tickets.updated_at','ticket_tickets.status','ticket_tickets.image','ticket_tickets.priority')
             ->join('users','ticket_tickets.user_id','=','users.id')
             ->get();
         }else{
             $ticket = Ticket::where('ticket_tickets.user_id',$auth->id)
-            ->select('ticket_tickets.id as id','users.name as nama','ticket_tickets.pesan','ticket_tickets.created_at','ticket_tickets.updated_at','ticket_tickets.status','ticket_tickets.image')
+            ->select('ticket_tickets.id as id','users.name as nama','ticket_tickets.pesan','ticket_tickets.created_at','ticket_tickets.updated_at','ticket_tickets.status','ticket_tickets.image','ticket_tickets.priority')
             ->join('users','ticket_tickets.user_id','=','users.id')
             ->orderBy('created_at','DESC')
             ->get();
@@ -86,11 +86,10 @@ class TicketController extends Controller
     {
         // Validasi
         $request->validate([
-            'nama' => 'required',
-            'user_id' => 'required',
             'pesan' =>  'required',
             'image' => 'max:2024',
-            'image.*' => 'mimes:jpeg,jpg,png,gif,pdf,doc,docx'
+            'image.*' => 'mimes:jpeg,jpg,png,gif,pdf,doc,docx',
+            'priority' => 'required'
         ]);
 
         $useradmin = User::where('role_id',1)->get();
@@ -104,17 +103,16 @@ class TicketController extends Controller
             }
 
             $file= new Ticket();
-            $file->user_id = $request->user_id;
-            $file->nama = $request->nama;
+            $file->user_id = Auth::user()->id;
             $file->pesan=$request->pesan;
             $file->image = json_encode($data);
-
+            $file->priority = $request->priority;
             $file->save();
 
             // SEND Notification
             $notifdata = [
                 'id_ticket' => $file->id,
-                'name' => $request->nama,
+                'name' => Auth::user()->name,
                 'message' => 'Ticket Baru telah dibuat'
             ];
 
@@ -122,22 +120,22 @@ class TicketController extends Controller
         }else{
 
             $ticket = Ticket::create([
-                'nama' => $request->nama,
-                'user_id' => $request->user_id,
-                'pesan' => $request->pesan
+                'user_id' => Auth::user()->id,
+                'pesan' => $request->pesan,
+                'priority' => $request->priority
             ]);
 
             // SEND Notification
             $notifdata = [
                 'id_ticket' => $ticket->id,
-                'name' => $request->nama,
+                'name' => Auth::user()->name,
                 'message' => 'Ticket Baru telah dibuat'
             ];
 
             Notification::send($useradmin, new NewTicket($notifdata));
         }
 
-        
+
         return redirect()->route('usr.ticket')
                         ->with('success','Ticket Berhasil Terkirim');
     }
@@ -168,7 +166,7 @@ class TicketController extends Controller
     public function show($id)
     {
         $ticket = Ticket::where('ticket_tickets.id',$id)
-        ->select('ticket_tickets.id as id','users.name as nama','ticket_tickets.pesan','ticket_tickets.created_at','ticket_tickets.updated_at','ticket_tickets.status','ticket_tickets.image')
+        ->select('ticket_tickets.id as id','users.name as nama','ticket_tickets.pesan','ticket_tickets.created_at','ticket_tickets.updated_at','ticket_tickets.status','ticket_tickets.image','ticket_tickets.priority')
             ->join('users','ticket_tickets.user_id','=','users.id')
         ->first();
         $pesan = Pesan::where('ticket_id',$id)

@@ -15,6 +15,7 @@ class Ticket extends Model
         "nama",
         "pesan",
         "user_id",
-        "image"
+        "image",
+        "priority"
     ];
 }
