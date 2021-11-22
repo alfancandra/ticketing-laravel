@@ -31,8 +31,8 @@
                     <th>Nama</th>
                     <th>Permasalahan</th>
                     <th>Ticket</th>
-                    <th>Support</th>
                     <th>Priority</th>
+                    <th>Support</th>
                     <th>Action</th>
                 </tr>
                 </thead>
@@ -59,6 +59,14 @@
                             @endif
                         </td>
                         <td style="width:10%" class="align-top"><span class="badge badge-info">Dikirim</span><br>{{ date('d-m-Y', strtotime($row->created_at)) }}<br>{{ date('H:i', strtotime($row->created_at)) }} WIB</td>
+                        <td class="align-top" style="width:10%">
+                            @if($row->priority==0)
+                                <span class="badge badge-warning">Rendah</span>
+                                @elseif($row->priority==1)
+                                <span class="badge badge-custom" style="background: #349342;color:white">Sedang</span><br>
+                                @elseif($row->priority==2)
+                                <span class="badge badge-danger">Tinggi</span>
+                                @endif</td>
                         <td class="align-top" style="width:10%">@if($row->status==0)
                             <span class="badge badge-warning">Belum Diatasi</span>
                             @elseif($row->status==1)
@@ -69,14 +77,7 @@
                             @else
                             <span class="badge badge-danger">Ticket Dibatalkan</span>
                             @endif</td>
-                        <td class="align-top" style="width:10%">
-                            @if($row->priority==0)
-                                <span class="badge badge-warning">Rendah</span>
-                                @elseif($row->priority==1)
-                                <span class="badge badge-custom" style="background: #349342;color:white">Sedang</span><br>
-                                @elseif($row->priority==2)
-                                <span class="badge badge-danger">Tinggi</span>
-                                @endif</td>
+
                         <td style="width: 10%" class="align-top">
                             <a href="{{ route('usr.showticket',$row->id) }}" class="btn btn-primary btn-sm">Detail</a>
 

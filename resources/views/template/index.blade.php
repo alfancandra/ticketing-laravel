@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>Support Ticket</title>
     <meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
-    <link rel="icon" href="{{ asset('') }}assets/img/logo.ico" type="image/x-icon" />
+    <link rel="icon" href="{{ asset('') }}assets/img/logo1.ico" type="image/x-icon" />
 
     <!-- Fonts and icons -->
     <script src="{{ asset('') }}assets/js/plugin/webfont/webfont.min.js"></script>
@@ -42,7 +42,7 @@
             <div class="logo-header" data-background-color="purple">
 
                 <a href="/ticket" class="logo">
-                    <i class="la flaticon-customer-support text-light"></i> <span class="text-light">Support
+                    <img src="{{ asset('') }}assets/img/logo1.png" width="25" style="margin-top: -7px"> <span class="text-light">Support
                         Ticket</span>
 
                 </a>
