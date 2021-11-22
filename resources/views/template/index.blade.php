@@ -294,25 +294,11 @@
 				<div class="container-fluid">
 					<nav class="pull-left">
 						<ul class="nav">
-							<li class="nav-item">
-								<a class="nav-link" href="https://www.themekita.com">
-									ThemeKita
-								</a>
-							</li>
-							<li class="nav-item">
-								<a class="nav-link" href="#">
-									Help
-								</a>
-							</li>
-							<li class="nav-item">
-								<a class="nav-link" href="#">
-									Licenses
-								</a>
-							</li>
+							<span>Developed by Alfan Chandra | Suharjoko - JQ as Project Manager</span>
 						</ul>
 					</nav>
 					<div class="copyright ml-auto">
-						2021, made with <i class="fa fa-heart heart text-danger"></i> by <a href="https://www.themekita.com">ThemeKita</a>
+						Copyright © 20211001 - {{ now()->year }}
 					</div>
 				</div>
 			</footer>

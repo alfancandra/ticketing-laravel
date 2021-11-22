@@ -88,6 +88,18 @@
         </div>
     </div>
 </div>
+<footer class="footer">
+    <div class="container-fluid">
+        <nav class="pull-left">
+            <ul class="nav">
+                <span>Developed by Alfan Chandra | Suharjoko - JQ as Project Manager</span>
+            </ul>
+        </nav>
+        <div class="copyright ml-auto">
+            Copyright © 20211001 - {{ now()->year }}
+        </div>
+    </div>
+</footer>
 @endsection
 @push('js')
 <script>

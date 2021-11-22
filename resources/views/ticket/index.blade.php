@@ -75,7 +75,7 @@
                             @elseif($row->status==2)
                             <span class="badge badge-danger">Tidak Dapat Diatasi</span>
                             @else
-                            <span class="badge badge-danger">Ticket Dibatalkan</span>
+                            <span class="badge badge-danger">Dibatalkan</span>
                             @endif</td>
 
                         <td style="width: 10%" class="align-top">
