@@ -88,18 +88,38 @@ if($ticket->status==0 && Auth::user()->role_id==0){
                     </div>
                     @endif
 
+
                     <div class="mb-3 row">
-                        <label for="staticEmail" class="col-sm-2 col-form-label">Priority</label>
-                        <div class="col-sm-10">
-                            <span class="form-control">@if($ticket->priority==0)
-                                <span class="badge badge-warning">Rendah</span>
-                                @elseif($ticket->priority==1)
-                                <span class="badge badge-custom" style="background: #349342;color:white">Sedang</span><br>
-                                @elseif($ticket->priority==2)
+                        <label for="staticEmail" class="col-sm-2 col-form-label">Status</label>
+                        <div class="col">
+
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" {{ $ticket->priority==0 ? 'checked' : '' }} name="priority" value="0" id="inlineRadio1" {{ Auth::user()->role_id==2 ? 'disabled' : '' }}>
+                                @if($ticket->priority==0)
+                                <span class="badge badge-info">Rendah</span>
+                                @else
+                                <label class="form-check-label" style="margin-top: 5px" for="inlineRadio1">Rendah</label>
+                                @endif
+                            </div>
+                              <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" {{ $ticket->priority==1 ? 'checked' : '' }} name="priority" value="1" id="inlineRadio2" {{ Auth::user()->role_id==2 ? 'disabled' : '' }}>
+                                @if($ticket->priority==1)
+                                <span class="badge badge-secondary" for="inlineRadio2">Sedang</span>
+                                @else
+                                <label class="form-check-label" style="margin-top: 5px" for="inlineRadio2">Sedang</label>
+                                @endif
+                            </div>
+                              <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="priority" {{ $ticket->priority==2 ? 'checked' : '' }} value="2" id="inlineRadio3" {{ Auth::user()->role_id==2 ? 'disabled' : '' }}>
+                                @if($ticket->priority==2)
                                 <span class="badge badge-danger">Tinggi</span>
-                                @endif</span>
+                                @else
+                                <label class="form-check-label" style="margin-top: 5px" for="inlineRadio3">Tinggi</label>
+                                @endif
+                            </div>
                         </div>
                     </div>
+
 
                     <div class="mb-3 row">
                         <label for="staticEmail" class="col-sm-2 col-form-label">Tanggal Dibuat</label>

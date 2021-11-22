@@ -58,12 +58,12 @@
                             </a>
                             @endif
                         </td>
-                        <td style="width:10%" class="align-top"><span class="badge badge-info">Dikirim</span><br>{{ date('d-m-Y', strtotime($row->created_at)) }}<br>{{ date('H:i', strtotime($row->created_at)) }} WIB</td>
+                        <td style="width:10%" class="align-top"><span class="badge badge-custom" style="background: gray;color:white">Dikirim</span><br>{{ date('d-m-Y', strtotime($row->created_at)) }}<br>{{ date('H:i', strtotime($row->created_at)) }} WIB</td>
                         <td class="align-top" style="width:10%">
                             @if($row->priority==0)
-                                <span class="badge badge-warning">Rendah</span>
+                                <span class="badge badge-info">Rendah</span>
                                 @elseif($row->priority==1)
-                                <span class="badge badge-custom" style="background: #349342;color:white">Sedang</span><br>
+                                <span class="badge badge-secondary" >Sedang</span><br>
                                 @elseif($row->priority==2)
                                 <span class="badge badge-danger">Tinggi</span>
                                 @endif</td>

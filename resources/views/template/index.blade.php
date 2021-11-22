@@ -42,7 +42,7 @@
             <div class="logo-header" data-background-color="purple">
 
                 <a href="/ticket" class="logo">
-                    <img src="{{ asset('') }}assets/img/logo1.png" width="25" style="margin-top: -7px"> <span class="text-light">Support
+                    <img src="{{ asset('') }}assets/img/logo1.png" width="20" style="margin-top:-5px"> <span class="text-light">Support
                         Ticket</span>
 
                 </a>
@@ -289,6 +289,33 @@
                     @yield('content')
                 </div>
             </div>
+
+            <footer class="footer">
+				<div class="container-fluid">
+					<nav class="pull-left">
+						<ul class="nav">
+							<li class="nav-item">
+								<a class="nav-link" href="https://www.themekita.com">
+									ThemeKita
+								</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" href="#">
+									Help
+								</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" href="#">
+									Licenses
+								</a>
+							</li>
+						</ul>
+					</nav>
+					<div class="copyright ml-auto">
+						2021, made with <i class="fa fa-heart heart text-danger"></i> by <a href="https://www.themekita.com">ThemeKita</a>
+					</div>
+				</div>
+			</footer>
 
         </div>
 

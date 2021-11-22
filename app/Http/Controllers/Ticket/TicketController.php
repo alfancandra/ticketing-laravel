@@ -20,7 +20,9 @@ class TicketController extends Controller
             $ticket = Ticket::where('status',0)
             ->select('ticket_tickets.id as id','users.name as nama','ticket_tickets.pesan','ticket_tickets.created_at','ticket_tickets.updated_at','ticket_tickets.status','ticket_tickets.image','ticket_tickets.priority')
             ->join('users','ticket_tickets.user_id','=','users.id')
+            ->orderBy('priority','DESC')
             ->orderBy('created_at','ASC')
+
             ->get();
         }else{
             $ticket = Ticket::where('status',0)
@@ -28,6 +30,7 @@ class TicketController extends Controller
             ->join('users','ticket_tickets.user_id','=','users.id')
             ->where('user_id',$auth->id)
             ->orderBy('created_at','DESC')
+
             ->get();
         }
         $title = 'Data Ticket Belum Diatasi';
@@ -230,7 +233,8 @@ class TicketController extends Controller
             'nama' => 'required',
             'pesan' => 'required',
             'image' => 'max:2024',
-            'image.*' => 'mimes:jpeg,jpg,png,gif,pdf,doc,docx'
+            'image.*' => 'mimes:jpeg,jpg,png,gif,pdf,doc,docx',
+            'priority' => 'required'
         ]);
 
         try{
@@ -259,6 +263,7 @@ class TicketController extends Controller
             $ticket->nama = $request->nama;
             $ticket->pesan = $request->pesan;
             $ticket->status = $request->statusticket;
+            $ticket->priority = $request->priority;
             if($request->statusticket==1){
                 $user = User::where('id',$ticket->user_id)->get();
                 $notifdata = [
