@@ -43,7 +43,7 @@
                         <td style="width:5%" class="align-top">{{ $i++ }}</td>
                         <td style="width:15%" class="align-top">{{ $row->nama }}</td>
 
-                        <td style="width:60%" class="align-top">
+                        <td style="width:40%" class="align-top">
                             {{ $row->pesan }}
                             @php if(!empty($row->image)){
                                 $json = json_decode($row->image);

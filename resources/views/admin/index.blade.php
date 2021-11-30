@@ -9,10 +9,11 @@
                 <h5 class="text-white op-7 mb-2">Support Ticket BKPP Kabupaten Sleman</h5>
             </div>
             <div class="ml-md-auto py-2 py-md-0">
-                <a href="{{ route('usr.ticket') }}" class="btn btn-white btn-border btn-round mr-2">Ticket Aktif</a>
                 @if(Auth::user()->role_id!=2)
-                <a href="{{ route('usr.addticket') }}" class="btn btn-secondary btn-round">Tambah Ticket</a>
+                <a href="{{ route('usr.addticket') }}" class="btn btn-white btn-border btn-round mr-2">Tambah Ticket</a>
                 @endif
+                <a href="{{ route('usr.ticket') }}" class="btn btn-secondary btn-round">Ticket Aktif</a>
+
             </div>
         </div>
     </div>
