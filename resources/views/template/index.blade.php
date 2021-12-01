@@ -215,7 +215,6 @@
         <div class="sidebar sidebar-style-2" data-background-color="dark">
             <div class="sidebar-wrapper scrollbar scrollbar-inner">
                 <div class="sidebar-content">
-
                     <ul class="nav nav-primary">
                         <li
                             class="nav-item {{ Request::segment(1) === 'admin' || Request::segment(1) === 'dashboard' ? 'active' : null }}">

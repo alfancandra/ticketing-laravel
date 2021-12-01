@@ -40,7 +40,7 @@
                         <td>{{ $i++ }}</td>
                         <td>{{ $row->username }}</td>
                         <td>{{ $row->name }}</td>
-                        
+
                         <td style="width:15%">@if($row->role_id==0)
                             <span class="text-success">Admin</span>
                             @elseif($row->role_id==1)
@@ -72,7 +72,6 @@
                                 </div>
                             </div>
                         </td>
-
                     </tr>
                     @endforeach
                 </tbody>
